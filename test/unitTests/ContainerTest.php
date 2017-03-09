@@ -23,8 +23,9 @@ namespace derbenni\wp\di\test\unitTests;
 
 use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\wp\di\NotFoundException;
 use \derbenni\wp\di\test\TestCase;
-use \InvalidArgumentException;
+use \TypeError;
 
 /**
  *
@@ -35,6 +36,7 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\wp\di\Container::__construct
+   * @covers \derbenni\wp\di\Container::add
    */
   public function testConstruct_CanSetDefinitionsInProperty() {
     $container = new Container([
@@ -50,22 +52,26 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\wp\di\Container::__construct
-   * @expectedException InvalidArgumentException
-   * @expectedExceptionMessage Only strings are allowed
+   * @covers \derbenni\wp\di\Container::add
+   *
+   * @expectedException TypeError
+   * @expectedExceptionMessage must be of the type string
    */
-  public function testConstruct_CanThrowExceptionIfInvalidIdIsGiven() {
+  public function testConstruct_CanThrowErrorIfInvalidIdIsGiven() {
     new Container([
-      123 => 'bar',
+      123 => $this->getMockForAbstractClass(iDefinition::class),
     ]);
   }
 
   /**
    *
    * @covers \derbenni\wp\di\Container::__construct
-   * @expectedException InvalidArgumentException
-   * @expectedExceptionMessage is not a valid definition
+   * @covers \derbenni\wp\di\Container::add
+   *
+   * @expectedException TypeError
+   * @expectedExceptionMessage must implement interface
    */
-  public function testConstruct_CanThrowExceptionIfInvalidDefinitionIsGiven() {
+  public function testConstruct_CanThrowErrorIfInvalidDefinitionIsGiven() {
     new Container([
       'foo' => 'bar',
     ]);
@@ -111,6 +117,7 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\wp\di\Container::get
+   *
    * @expectedException \derbenni\wp\di\NotFoundException
    * @expectedExceptionMessage not found in the container
    */

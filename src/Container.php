@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -44,20 +46,27 @@ class Container implements ContainerInterface {
    * Sets the definitions known to this instance of the container.
    *
    * @param iDefinition[] $definitions
-   * @throws InvalidArgumentException If an ID given is not a string or a given definition is not of the correct type.
    *
    * @since 1.0.0
    */
   public function __construct(array $definitions) {
     foreach($definitions as $id => $definition) {
-      if(!is_string($id)) {
-        throw new InvalidArgumentException(sprintf('The ID "%s" is invalid. Only strings are allowed.', $id));
-      }
-      if(!$definition instanceof iDefinition) {
-        throw new InvalidArgumentException(sprintf('The definition with the ID "%s" is not a valid definition.', $id));
-      }
-      $this->definitions[$id] = $definition;
+      $this->add($id, $definition);
     }
+  }
+
+  /**
+   * Adds a definition to the container.
+   *
+   * @param string $id
+   * @param iDefinition $definition
+   * @return self
+   *
+   * @since 1.0.0
+   */
+  public function add(string $id, iDefinition $definition): Container {
+    $this->definitions[$id] = $definition;
+    return $this;
   }
 
   /**
