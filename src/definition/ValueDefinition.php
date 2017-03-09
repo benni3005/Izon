@@ -23,9 +23,11 @@ declare(strict_types = 1);
 
 namespace derbenni\wp\di\definition;
 
+use \derbenni\wp\di\Container;
 use \InvalidArgumentException;
 
 /**
+ * A simple definition for setting scalar values and arrays.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
@@ -45,10 +47,9 @@ class ValueDefinition implements iDefinition {
 
   /**
    * Sets the ID and value of this definition.
-   * Beware: The value can only be a scalar type or an array!
    *
    * @param string $id
-   * @param mixed $value
+   * @param mixed $value Can only be a scalar type or an array!
    * @throws InvalidArgumentException If the value given to the definition is not scalar or an array.
    *
    * @since 1.0
@@ -76,11 +77,12 @@ class ValueDefinition implements iDefinition {
   /**
    * Returns the value of this definition.
    *
+   * @param Container $container Not used here, since the value will be returned directly.
    * @return mixed
    *
    * @since 1.0
    */
-  public function define() {
+  public function define(Container $container) {
     return $this->value;
   }
 }

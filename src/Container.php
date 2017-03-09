@@ -81,7 +81,7 @@ class Container implements ContainerInterface {
     if(!$this->has($id)) {
       throw new NotFoundException(sprintf('ID "%s" was not found in the container.', $id));
     }
-    return $this->definitions[$id]->define();
+    return $this->definitions[$id]->define($this);
   }
 
   /**

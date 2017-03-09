@@ -19,34 +19,16 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition;
+namespace derbenni\wp\di;
 
-use \derbenni\wp\di\Container;
+use \Exception;
+use \Interop\Container\Exception\ContainerException;
 
 /**
- * The basic interface for a definition.
- *
+ * An exception, that gets thrown when something went wrong in resolving dependencies.
+ * 
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-interface iDefinition {
+class DependencyException extends Exception implements ContainerException {
 
-  /**
-   * Returns the ID of the definition.
-   *
-   * @return string
-   *
-   * @since 1.0.0
-   */
-  public function getId(): string;
-
-  /**
-   * Returns the value of the definition. This can be of every type in PHP you can imagine.
-   * For scalar types it can be just them or for objects it can be their instance.
-   *
-   * @param Container $container The container, that gets used to resolve dependencies.
-   * @return mixed
-   *
-   * @since 1.0.0
-   */
-  public function define(Container $container);
 }

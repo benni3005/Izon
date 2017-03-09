@@ -21,9 +21,11 @@
 
 namespace derbenni\wp\di\test\unitTests\definition;
 
+use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\ValueDefinition;
 use \derbenni\wp\di\test\TestCase;
-use \TypeError;
+use \InvalidArgumentException;
+use \stdClass;
 
 /**
  *
@@ -35,7 +37,7 @@ class ValueDefinitionTest extends TestCase {
    *
    * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
    *
-   * @expectedException \InvalidArgumentException
+   * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "NULL"
    */
   public function testConstruct_CanThrowExceptionIfValueIsNull() {
@@ -46,28 +48,27 @@ class ValueDefinitionTest extends TestCase {
    *
    * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
    *
-   * @expectedException \InvalidArgumentException
+   * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "object"
    */
   public function testConstruct_CanThrowExceptionIfValueIsObject() {
-    new ValueDefinition('123', new \stdClass());
+    new ValueDefinition('123', new stdClass());
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
    * @covers \derbenni\wp\di\definition\ValueDefinition::getId
    */
-  public function testConstruct_CanSetAndReturnId() {
+  public function testGetId_CanSetAndReturnId() {
     self::assertEquals('foo', (new ValueDefinition('foo', 'bar'))->getId());
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
    * @covers \derbenni\wp\di\definition\ValueDefinition::define
    */
-  public function testConstruct_CanSetAndDefineValue() {
-    self::assertEquals('bar', (new ValueDefinition('foo', 'bar'))->define());
+  public function testDefine_CanSetAndDefineValue() {
+    $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
+    self::assertEquals('bar', (new ValueDefinition('foo', 'bar'))->define($container));
   }
 }
