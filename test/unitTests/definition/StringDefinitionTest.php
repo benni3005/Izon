@@ -35,7 +35,7 @@ class StringDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
+   * @covers \derbenni\wp\di\definition\StringDefinition::__construct
    * @covers \derbenni\wp\di\definition\StringDefinition::getId
    */
   public function testGetId_CanSetAndReturnId() {
@@ -44,7 +44,7 @@ class StringDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
+   * @covers \derbenni\wp\di\definition\StringDefinition::__construct
    * @covers \derbenni\wp\di\definition\StringDefinition::define
    */
   public function testDefine_CanSetAndDefineValueIfNoExpressionHadToBeReplaced() {
