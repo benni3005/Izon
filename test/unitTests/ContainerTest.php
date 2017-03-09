@@ -32,6 +32,10 @@ use \InvalidArgumentException;
  */
 class ContainerTest extends TestCase {
 
+  /**
+   *
+   * @covers \derbenni\wp\di\Container::__construct
+   */
   public function testConstruct_CanSetDefinitionsInProperty() {
     $container = new Container([
       'foo' => $this->getMockForAbstractClass(iDefinition::class),
@@ -45,6 +49,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
+   * @covers \derbenni\wp\di\Container::__construct
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage Only strings are allowed
    */
@@ -56,6 +61,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
+   * @covers \derbenni\wp\di\Container::__construct
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage is not a valid definition
    */
@@ -65,6 +71,10 @@ class ContainerTest extends TestCase {
     ]);
   }
 
+  /**
+   *
+   * @covers \derbenni\wp\di\Container::has
+   */
   public function testHas_CanReturnTrueIfDefinitionWithIdExists() {
     $container = new Container([
       'foo' => $this->getMockForAbstractClass(iDefinition::class),
@@ -73,10 +83,18 @@ class ContainerTest extends TestCase {
     self::assertTrue($container->has('foo'));
   }
 
+  /**
+   *
+   * @covers \derbenni\wp\di\Container::has
+   */
   public function testHas_CanReturnFalseIfDefinitionWithIdDoesNotExists() {
     self::assertFalse((new Container([]))->has('foo'));
   }
 
+  /**
+   *
+   * @covers \derbenni\wp\di\Container::get
+   */
   public function testGet_CanReturnValueFromDefinitionIfDefinitionExists() {
     $definition = $this->getMockForAbstractClass(iDefinition::class);
     $definition->expects(self::once())
@@ -92,6 +110,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
+   * @covers \derbenni\wp\di\Container::get
    * @expectedException \derbenni\wp\di\NotFoundException
    * @expectedExceptionMessage not found in the container
    */

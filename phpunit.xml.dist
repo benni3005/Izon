@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    phpunit -c phpunit.xml
+    vendor/bin/phpunit -c phpunit.xml.dist
 -->
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
@@ -20,7 +20,7 @@
 
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">src</directory>
+      <directory suffix=".php">./src</directory>
     </whitelist>
   </filter>
 </phpunit>
