@@ -8,10 +8,11 @@ php:
 
 before_script:
   - composer self-update
+  - composer require satooshi/php-coveralls
   - composer install --prefer-source
 
 script:
-  - vendor/bin/phpunit -c phpunit.xml $PHPUNIT_FLAGS
+  - vendor/bin/phpunit -c phpunit.xml --coverage-clover clover.xml $PHPUNIT_FLAGS
 
 after_script:
   - php vendor/bin/coveralls -v
