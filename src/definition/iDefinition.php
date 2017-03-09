@@ -39,10 +39,11 @@ interface iDefinition {
 
   /**
    * Returns the value of the definition. This can be of every type in PHP you can imagine.
+   * For scalar types it can be just them or for objects it can be their instance.
    *
    * @return mixed
    *
    * @since 1.0.0
    */
-  public function getValue();
+  public function define();
 }

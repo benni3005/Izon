@@ -28,7 +28,7 @@ use Interop\Container\Exception\NotFoundException as OriginalNotFoundException;
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  *
- * @since 1.0.0
+ * @since 1.0
  */
 class NotFoundException extends \Exception implements OriginalNotFoundException {
 

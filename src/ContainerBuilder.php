@@ -26,7 +26,7 @@ namespace derbenni\wp\di;
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  *
- * @since 1.0.0
+ * @since 1.0
  */
 class ContainerBuilder {
 

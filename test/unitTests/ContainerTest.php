@@ -104,7 +104,7 @@ class ContainerTest extends TestCase {
   public function testGet_CanReturnValueFromDefinitionIfDefinitionExists() {
     $definition = $this->getMockForAbstractClass(iDefinition::class);
     $definition->expects(self::once())
-      ->method('getValue')
+      ->method('define')
       ->willReturn('bar');
 
     $container = new Container([

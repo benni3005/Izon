@@ -25,14 +25,13 @@ namespace derbenni\wp\di;
 
 use \derbenni\wp\di\definition\iDefinition;
 use \Interop\Container\ContainerInterface;
-use \InvalidArgumentException;
 
 /**
  * Dependency Injection Container.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  *
- * @since 1.0.0
+ * @since 1.0
  */
 class Container implements ContainerInterface {
 
@@ -47,7 +46,7 @@ class Container implements ContainerInterface {
    *
    * @param iDefinition[] $definitions
    *
-   * @since 1.0.0
+   * @since 1.0
    */
   public function __construct(array $definitions) {
     foreach($definitions as $id => $definition) {
@@ -62,7 +61,7 @@ class Container implements ContainerInterface {
    * @param iDefinition $definition
    * @return self
    *
-   * @since 1.0.0
+   * @since 1.0
    */
   public function add(string $id, iDefinition $definition): Container {
     $this->definitions[$id] = $definition;
@@ -76,13 +75,13 @@ class Container implements ContainerInterface {
    * @return mixed
    * @throws NotFoundException If no definition could be found for the given ID.
    *
-   * @since 1.0.0
+   * @since 1.0
    */
   public function get($id) {
     if(!$this->has($id)) {
       throw new NotFoundException(sprintf('ID "%s" was not found in the container.', $id));
     }
-    return $this->definitions[$id]->getValue();
+    return $this->definitions[$id]->define();
   }
 
   /**
@@ -91,7 +90,7 @@ class Container implements ContainerInterface {
    * @param string $id
    * @return bool
    *
-   * @since 1.0.0
+   * @since 1.0
    */
   public function has($id): bool {
     return array_key_exists($id, $this->definitions);
