@@ -57,6 +57,7 @@ class ValueDefinitionTest extends TestCase {
 
   /**
    *
+   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
    * @covers \derbenni\wp\di\definition\ValueDefinition::getId
    */
   public function testGetId_CanSetAndReturnId() {
@@ -65,6 +66,7 @@ class ValueDefinitionTest extends TestCase {
 
   /**
    *
+   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
    * @covers \derbenni\wp\di\definition\ValueDefinition::define
    */
   public function testDefine_CanSetAndDefineValue() {
