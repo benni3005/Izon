@@ -168,6 +168,6 @@ class ContainerTest extends TestCase {
    * @expectedExceptionMessage not found in the container
    */
   public function testMake_CanThrowExceptionIfDefinitionWasNotFound() {
-    (new Container([]))->get('foo');
+    (new Container([]))->make('foo');
   }
 }
