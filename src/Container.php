@@ -42,6 +42,12 @@ class Container implements ContainerInterface {
   private $definitions = [];
 
   /**
+   *
+   * @var mixed[]
+   */
+  private $cache = [];
+
+  /**
    * Sets the definitions known to this instance of the container.
    *
    * @param iDefinition[] $definitions
@@ -70,6 +76,7 @@ class Container implements ContainerInterface {
 
   /**
    * Returns the value of a definition by using its ID as key.
+   * If it was requested before it will get cached for further requests. If you need the value to be built every time use ::make instead.
    *
    * @param string $id
    * @return mixed
@@ -78,6 +85,28 @@ class Container implements ContainerInterface {
    * @since 1.0
    */
   public function get($id) {
+    if(!$this->has($id)) {
+      throw new NotFoundException(sprintf('ID "%s" was not found in the container.', $id));
+    }
+
+    if(!array_key_exists($id, $this->cache)) {
+      $this->cache[$id] = $this->definitions[$id]->define($this);
+    }
+
+    return $this->cache[$id];
+  }
+
+  /**
+   * Returns the value of a definition by using its ID as key.
+   * This method will always rebuild the value and not use caching.
+   *
+   * @param string $id
+   * @return mixed
+   * @throws NotFoundException If no definition could be found for the given ID.
+   *
+   * @since 1.0
+   */
+  public function make($id) {
     if(!$this->has($id)) {
       throw new NotFoundException(sprintf('ID "%s" was not found in the container.', $id));
     }

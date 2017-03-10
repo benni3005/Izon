@@ -116,11 +116,58 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\wp\di\Container::get
+   */
+  public function testGet_CanReturnValueFromCacheIfDefinitionWasBuiltBefore() {
+    $definition = $this->getMockForAbstractClass(iDefinition::class);
+    $definition->expects(self::once())
+      ->method('define')
+      ->willReturn('bar');
+
+    $container = new Container([
+      'foo' => $definition,
+    ]);
+
+    self::assertEquals('bar', $container->get('foo'));
+    self::assertEquals('bar', $container->get('foo'));
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\Container::get
    *
    * @expectedException \derbenni\wp\di\NotFoundException
    * @expectedExceptionMessage not found in the container
    */
   public function testGet_CanThrowExceptionIfDefinitionWasNotFound() {
+    (new Container([]))->get('foo');
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\Container::make
+   */
+  public function testMake_CanReturnValueFromDefinitionEveryTimeItIsRequested() {
+    $definition = $this->getMockForAbstractClass(iDefinition::class);
+    $definition->expects(self::exactly(2))
+      ->method('define')
+      ->willReturn('bar');
+
+    $container = new Container([
+      'foo' => $definition,
+    ]);
+
+    self::assertEquals('bar', $container->make('foo'));
+    self::assertEquals('bar', $container->make('foo'));
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\Container::make
+   *
+   * @expectedException \derbenni\wp\di\NotFoundException
+   * @expectedExceptionMessage not found in the container
+   */
+  public function testMake_CanThrowExceptionIfDefinitionWasNotFound() {
     (new Container([]))->get('foo');
   }
 }
