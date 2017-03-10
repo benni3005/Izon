@@ -36,27 +36,18 @@ class ExpressionDefinitionTest extends TestCase {
   /**
    *
    * @covers \derbenni\wp\di\definition\ExpressionDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ExpressionDefinition::getId
-   */
-  public function testGetId_CanSetAndReturnId() {
-    self::assertEquals('foo', (new ExpressionDefinition('foo', 'bar'))->getId());
-  }
-
-  /**
-   *
-   * @covers \derbenni\wp\di\definition\ExpressionDefinition::__construct
    * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
    */
   public function testDefine_CanSetAndDefineValueIfNoExpressionHadToBeReplaced() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
-    self::assertEquals('bar', (new ExpressionDefinition('foo', 'bar'))->define($container));
+    self::assertEquals('bar', (new ExpressionDefinition('bar'))->define($container));
   }
 
   /**
    *
    * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
    * @expectedException \derbenni\wp\di\DependencyException
-   * @expectedExceptionMessage could not be resolved in definition
+   * @expectedExceptionMessage could not be resolved in
    */
   public function testDefine_CanThrowDependencyExceptionIfExpressionCouldNotBeResolved() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
@@ -66,7 +57,7 @@ class ExpressionDefinitionTest extends TestCase {
       ->with(self::equalTo('baz'))
       ->willThrowException(new NotFoundException());
 
-    (new ExpressionDefinition('foo', 'bar.{baz}'))->define($container);
+    (new ExpressionDefinition('bar.{baz}'))->define($container);
   }
 
   /**
@@ -84,6 +75,6 @@ class ExpressionDefinitionTest extends TestCase {
 
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
 
-    (new ExpressionDefinition('foo', 'bar.{baz}'))->define($container);
+    (new ExpressionDefinition('bar.{baz}'))->define($container);
   }
 }

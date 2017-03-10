@@ -31,47 +31,28 @@ use \InvalidArgumentException;
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class ScalarArrayDefinition implements iDefinition {
-
-  /**
-   *
-   * @var string
-   */
-  private $id = '';
+class ScalarDefinition implements iDefinition {
 
   /**
    *
    * @var mixed
    */
-  private $value = null;
+  private $scalar = null;
 
   /**
-   * Sets the ID and value of this definition.
+   * Sets the scalar value of this definition.
    *
-   * @param string $id
-   * @param mixed $value Can only be a scalar type or an array!
+   * @param mixed $scalar Can only be a scalar type or an array!
    * @throws InvalidArgumentException If the value given to the definition is not scalar or an array.
    *
    * @since 1.0
    */
-  public function __construct(string $id, $value) {
-    if(!is_scalar($value) && !is_array($value)) {
-      throw new InvalidArgumentException(sprintf('The type for ID "%s" is neither scalar nor an array. It\'s of the type "%s".', $id, gettype($value)));
+  public function __construct($scalar) {
+    if(!is_scalar($scalar) && !is_array($scalar)) {
+      throw new InvalidArgumentException(sprintf('The value given is neither scalar nor an array. It\'s of the type "%s".', gettype($scalar)));
     }
 
-    $this->id = $id;
-    $this->value = $value;
-  }
-
-  /**
-   * Returns the ID of this definition.
-   *
-   * @return string
-   *
-   * @since 1.0
-   */
-  public function getId(): string {
-    return $this->id;
+    $this->scalar = $scalar;
   }
 
   /**
@@ -83,6 +64,6 @@ class ScalarArrayDefinition implements iDefinition {
    * @since 1.0
    */
   public function define(Container $container) {
-    return $this->value;
+    return $this->scalar;
   }
 }

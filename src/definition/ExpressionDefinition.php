@@ -39,36 +39,17 @@ class ExpressionDefinition implements iDefinition {
    *
    * @var string
    */
-  private $id = '';
+  private $expression = '';
 
   /**
+   * Sets the expression to parse.
    *
-   * @var string
-   */
-  private $string = '';
-
-  /**
-   * Sets the ID and string to parse of this definition.
-   *
-   * @param string $id
-   * @param string $string
+   * @param string $expression
    *
    * @since 1.0
    */
-  public function __construct(string $id, string $string) {
-    $this->id = $id;
-    $this->string = $string;
-  }
-
-  /**
-   * Returns the ID of this definition.
-   *
-   * @return string
-   *
-   * @since 1.0
-   */
-  public function getId(): string {
-    return $this->id;
+  public function __construct(string $expression) {
+    $this->expression = $expression;
   }
 
   /**
@@ -82,19 +63,18 @@ class ExpressionDefinition implements iDefinition {
    * @since 1.0
    */
   public function define(Container $container) {
-    $id = $this->id;
-    $string = $this->string;
+    $expression = $this->expression;
 
-    $result = preg_replace_callback('#\{([^\{\}]+)\}#', function (array $matches) use ($container, $id) {
+    $result = preg_replace_callback('#\{([^\{\}]+)\}#', function (array $matches) use ($container, $expression) {
       try {
         return $container->get($matches[1]);
       }catch(NotFoundException $exception) {
-        throw new DependencyException(sprintf('Expression "%s" could not be resolved in definition with ID "%s"', $matches[1], $id), 0, $exception);
+        throw new DependencyException(sprintf('Expression "%s" could not be resolved in "%s"', $matches[1], $expression), 0, $exception);
       }
-    }, $string);
+    }, $expression);
 
     if($result === null) {
-      throw new RuntimeException(sprintf('Something unforeseen happened when parsing the expressions for definition with ID "%s"', $id));
+      throw new RuntimeException(sprintf('Something unforeseen happened when parsing the expression "%s"', $expression));
     }
 
     return $result;

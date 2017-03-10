@@ -22,7 +22,7 @@
 namespace derbenni\wp\di\test\unitTests\definition;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\ScalarArrayDefinition;
+use \derbenni\wp\di\definition\ScalarDefinition;
 use \derbenni\wp\di\test\TestCase;
 use \InvalidArgumentException;
 use \stdClass;
@@ -31,46 +31,37 @@ use \stdClass;
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class ScalarArrayDefinitionTest extends TestCase {
+class ScalarDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::__construct
+   * @covers \derbenni\wp\di\definition\ScalarDefinition::__construct
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "NULL"
    */
   public function testConstruct_CanThrowExceptionIfValueIsNull() {
-    new ScalarArrayDefinition('123', null);
+    new ScalarDefinition(null);
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::__construct
+   * @covers \derbenni\wp\di\definition\ScalarDefinition::__construct
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "object"
    */
   public function testConstruct_CanThrowExceptionIfValueIsObject() {
-    new ScalarArrayDefinition('123', new stdClass());
+    new ScalarDefinition(new stdClass());
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::getId
-   */
-  public function testGetId_CanSetAndReturnId() {
-    self::assertEquals('foo', (new ScalarArrayDefinition('foo', 'bar'))->getId());
-  }
-
-  /**
-   *
-   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::define
+   * @covers \derbenni\wp\di\definition\ScalarDefinition::__construct
+   * @covers \derbenni\wp\di\definition\ScalarDefinition::define
    */
   public function testDefine_CanSetAndDefineValue() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
-    self::assertEquals('bar', (new ScalarArrayDefinition('foo', 'bar'))->define($container));
+    self::assertEquals('bar', (new ScalarDefinition('bar'))->define($container));
   }
 }

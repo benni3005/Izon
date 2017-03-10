@@ -19,25 +19,33 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition;
+namespace derbenni\wp\di\test\unitTests;
 
-use \derbenni\wp\di\Container;
+use \derbenni\wp\di\definition\ExpressionDefinition;
+use \derbenni\wp\di\definition\ScalarDefinition;
+use \derbenni\wp\di\test\TestCase;
+use function \derbenni\wp\di\expression;
+use function \derbenni\wp\di\scalar;
 
 /**
- * The basic interface for a definition.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-interface iDefinition {
+class FunctionsTest extends TestCase {
 
   /**
-   * Returns the value of the definition. This can be of every type in PHP you can imagine.
-   * For scalar types it can be just them or for objects it can be their instance.
    *
-   * @param Container $container The container, that gets used to resolve dependencies.
-   * @return mixed
-   *
-   * @since 1.0.0
+   * @covers ::derbenni\wp\di\scalar
    */
-  public function define(Container $container);
+  public function testScalar_CanReturnCorrectDefinition() {
+    self::assertInstanceOf(ScalarDefinition::class, scalar('foo'));
+  }
+
+  /**
+   *
+   * @covers ::derbenni\wp\di\expression
+   */
+  public function testExpression_CanReturnCorrectDefinition() {
+    self::assertInstanceOf(ExpressionDefinition::class, expression('foo'));
+  }
 }

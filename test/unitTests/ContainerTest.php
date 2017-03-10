@@ -23,7 +23,6 @@ namespace derbenni\wp\di\test\unitTests;
 
 use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\iDefinition;
-use \derbenni\wp\di\NotFoundException;
 use \derbenni\wp\di\test\TestCase;
 use \TypeError;
 
