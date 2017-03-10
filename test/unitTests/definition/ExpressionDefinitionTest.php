@@ -23,7 +23,8 @@ namespace derbenni\wp\di\test\unitTests\definition;
 
 use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\ExpressionDefinition;
-use \derbenni\wp\di\NotFoundException;
+use \derbenni\wp\di\definition\resolver\iResolver;
+use \derbenni\wp\di\DependencyException;
 use \derbenni\wp\di\test\TestCase;
 use \RuntimeException;
 
@@ -40,41 +41,47 @@ class ExpressionDefinitionTest extends TestCase {
    */
   public function testDefine_CanSetAndDefineValueIfNoExpressionHadToBeReplaced() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
-    self::assertEquals('bar', (new ExpressionDefinition('bar'))->define($container));
+
+    $resolver = $this->getMockForAbstractClass(iResolver::class);
+    $resolver->expects(self::once())
+      ->method('resolve')
+      ->with(self::equalTo('bar'))
+      ->willReturn('bar');
+
+    self::assertEquals('bar', (new ExpressionDefinition('bar', $resolver))->define($container));
   }
 
   /**
    *
    * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
    * @expectedException \derbenni\wp\di\DependencyException
-   * @expectedExceptionMessage could not be resolved in
    */
   public function testDefine_CanThrowDependencyExceptionIfExpressionCouldNotBeResolved() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
-    $container
-      ->expects(self::once())
-      ->method('get')
-      ->with(self::equalTo('baz'))
-      ->willThrowException(new NotFoundException());
 
-    (new ExpressionDefinition('bar.{baz}'))->define($container);
+    $resolver = $this->getMockForAbstractClass(iResolver::class);
+    $resolver->expects(self::once())
+      ->method('resolve')
+      ->with(self::equalTo('bar.{baz}'), self::equalTo($container))
+      ->willThrowException(new DependencyException());
+
+    (new ExpressionDefinition('bar.{baz}', $resolver))->define($container);
   }
 
   /**
    *
    * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
    * @expectedException RuntimeException
-   * @expectedExceptionMessage Something unforeseen happened
-   * @runInSeparateProcess
    */
   public function testDefine_CanThrowRuntimeExceptionIfExpressionCouldNotBeResolved() {
-    $pregReplaceCallbackMock = $this->getBuiltInFunctionMock('preg_replace_callback');
-    $pregReplaceCallbackMock
-      ->expects(self::once())
-      ->willReturn(null);
-
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
 
-    (new ExpressionDefinition('bar.{baz}'))->define($container);
+    $resolver = $this->getMockForAbstractClass(iResolver::class);
+    $resolver->expects(self::once())
+      ->method('resolve')
+      ->with(self::equalTo('bar.{baz}'), self::equalTo($container))
+      ->willThrowException(new RuntimeException());
+
+    (new ExpressionDefinition('bar.{baz}', $resolver))->define($container);
   }
 }

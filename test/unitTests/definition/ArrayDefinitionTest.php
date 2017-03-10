@@ -24,6 +24,7 @@ namespace derbenni\wp\di\test\unitTests\definition;
 use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\wp\di\definition\resolver\iResolver;
 use \derbenni\wp\di\test\TestCase;
 
 /**
@@ -39,7 +40,14 @@ class ArrayDefinitionTest extends TestCase {
    */
   public function testDefine_CanSetAndDefineValueIfNoSubDefinitionsGiven() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
-    self::assertEquals([1, 2, 3], (new ArrayDefinition([1, 2, 3]))->define($container));
+
+    $resolver = $this->getMockForAbstractClass(iResolver::class);
+    $resolver->expects(self::once())
+      ->method('resolve')
+      ->with(self::equalTo([1, 2, 3]))
+      ->willReturn([1, 2, 3]);
+
+    self::assertEquals([1, 2, 3], (new ArrayDefinition([1, 2, 3], $resolver))->define($container));
   }
 
   /**
@@ -51,11 +59,13 @@ class ArrayDefinitionTest extends TestCase {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
 
     $definition = $this->getMockForAbstractClass(iDefinition::class);
-    $definition->expects(self::once())
-      ->method('define')
-      ->with(self::equalTo($container))
-      ->willReturn('ipsum');
 
-    self::assertEquals(['ipsum'], (new ArrayDefinition([$definition]))->define($container));
+    $resolver = $this->getMockForAbstractClass(iResolver::class);
+    $resolver->expects(self::once())
+      ->method('resolve')
+      ->with(self::equalTo([$definition]))
+      ->willReturn(['ipsum']);
+
+    self::assertEquals(['ipsum'], (new ArrayDefinition([$definition], $resolver))->define($container));
   }
 }

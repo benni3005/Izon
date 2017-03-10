@@ -25,6 +25,8 @@ namespace derbenni\wp\di;
 
 use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
+use \derbenni\wp\di\definition\resolver\ArrayResolver;
+use \derbenni\wp\di\definition\resolver\ExpressionResolver;
 use \derbenni\wp\di\definition\ScalarDefinition;
 use \InvalidArgumentException;
 
@@ -41,7 +43,7 @@ if(!function_exists('derbenni\wp\di\value')) {
    */
   function value($value) {
     if(is_array($value)) {
-      return new ArrayDefinition($value);
+      return new ArrayDefinition($value, new ArrayResolver());
     }elseif(is_scalar($value)) {
       return new ScalarDefinition($value);
     }
@@ -63,6 +65,6 @@ if(!function_exists('derbenni\wp\di\expression')) {
    * @since 1.0
    */
   function expression(string $expression) {
-    return new ExpressionDefinition($expression);
+    return new ExpressionDefinition($expression, new ExpressionResolver());
   }
 }

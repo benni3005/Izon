@@ -21,55 +21,49 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition;
+namespace derbenni\wp\di\definition\resolver;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\resolver\iResolver;
+use \derbenni\wp\di\definition\iDefinition;
 
 /**
- * A definition used for defining arrays and resolving their entries against other definitions.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
- *
- * @since 1.0
  */
-class ArrayDefinition implements iDefinition {
+class ArrayResolver implements iResolver {
 
   /**
-   *
-   * @var mixed[]
-   */
-  private $array = [];
-
-  /**
-   *
-   * @var iResolver
-   */
-  private $resolver = null;
-
-  /**
-   * Sets the array used in this definition.
+   * Checks if the given value is actually an array.
    *
    * @param mixed[] $array
-   * @param iResolver $resolver
+   * @return bool
    *
    * @since 1.0
    */
-  public function __construct(array $array, iResolver $resolver) {
-    $this->array = $array;
-    $this->resolver = $resolver;
+  public function can($array): bool {
+    return is_array($array);
   }
 
   /**
-   * Returns the array of this definition.
-   * If any other definition is found within it will get resolved beforehand.
+   * Iterates the array and resolves definitions found within. Then returns everything.
    *
+   * @param mixed[] $array
    * @param Container $container
-   * @return mixed[]
+   * @return string
    *
    * @since 1.0
    */
-  public function define(Container $container): array {
-    return $this->resolver->resolve($this->array, $container);
+  public function resolve($array, Container $container) {
+    $result = [];
+
+    foreach($array as $key => $value) {
+      if($value instanceof iDefinition) {
+        $result[$key] = $value->define($container);
+      }else {
+        $result[$key] = $value;
+      }
+    }
+
+    return $result;
   }
 }

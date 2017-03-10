@@ -24,8 +24,8 @@ declare(strict_types = 1);
 namespace derbenni\wp\di\definition;
 
 use \derbenni\wp\di\Container;
+use \derbenni\wp\di\definition\resolver\iResolver;
 use \derbenni\wp\di\DependencyException;
-use \Interop\Container\Exception\NotFoundException;
 use \RuntimeException;
 
 /**
@@ -44,14 +44,22 @@ class ExpressionDefinition implements iDefinition {
   private $expression = '';
 
   /**
-   * Sets the expression to parse.
+   *
+   * @var iResolver
+   */
+  private $resolver = null;
+
+  /**
+   * Sets the expression to parse and a resolver.
    *
    * @param string $expression
+   * @param iResolver $resolver
    *
    * @since 1.0
    */
-  public function __construct(string $expression) {
+  public function __construct(string $expression, iResolver $resolver) {
     $this->expression = $expression;
+    $this->resolver = $resolver;
   }
 
   /**
@@ -65,20 +73,6 @@ class ExpressionDefinition implements iDefinition {
    * @since 1.0
    */
   public function define(Container $container) {
-    $expression = $this->expression;
-
-    $result = preg_replace_callback('#\{([^\{\}]+)\}#', function (array $matches) use ($container, $expression) {
-      try {
-        return $container->get($matches[1]);
-      }catch(NotFoundException $exception) {
-        throw new DependencyException(sprintf('Expression "%s" could not be resolved in "%s"', $matches[1], $expression), 0, $exception);
-      }
-    }, $expression);
-
-    if($result === null) {
-      throw new RuntimeException(sprintf('Something unforeseen happened when parsing the expression "%s"', $expression));
-    }
-
-    return $result;
+    return $this->resolver->resolve($this->expression, $container);
   }
 }

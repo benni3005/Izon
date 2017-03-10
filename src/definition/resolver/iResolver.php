@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -21,55 +19,37 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition;
+namespace derbenni\wp\di\definition\resolver;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\resolver\iResolver;
 
 /**
- * A definition used for defining arrays and resolving their entries against other definitions.
+ * Basic interface for definition resolvers.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  *
  * @since 1.0
  */
-class ArrayDefinition implements iDefinition {
+interface iResolver {
 
   /**
+   * Checks if the resolver can actually resolve the given value.
    *
-   * @var mixed[]
-   */
-  private $array = [];
-
-  /**
-   *
-   * @var iResolver
-   */
-  private $resolver = null;
-
-  /**
-   * Sets the array used in this definition.
-   *
-   * @param mixed[] $array
-   * @param iResolver $resolver
+   * @param mixed $value
+   * @return bool
    *
    * @since 1.0
    */
-  public function __construct(array $array, iResolver $resolver) {
-    $this->array = $array;
-    $this->resolver = $resolver;
-  }
+  public function can($value): bool;
 
   /**
-   * Returns the array of this definition.
-   * If any other definition is found within it will get resolved beforehand.
+   * This method will resolve the given value.
    *
-   * @param Container $container
-   * @return mixed[]
+   * @param Container $container Used for building other definitions found when resolving.
+   * @return mixed
+   * @throws InvalidArgumentException If invalid value was given.
    *
    * @since 1.0
    */
-  public function define(Container $container): array {
-    return $this->resolver->resolve($this->array, $container);
-  }
+  public function resolve($value, Container $container);
 }
