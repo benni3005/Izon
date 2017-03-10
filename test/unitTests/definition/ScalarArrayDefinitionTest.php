@@ -22,7 +22,7 @@
 namespace derbenni\wp\di\test\unitTests\definition;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\ValueDefinition;
+use \derbenni\wp\di\definition\ScalarArrayDefinition;
 use \derbenni\wp\di\test\TestCase;
 use \InvalidArgumentException;
 use \stdClass;
@@ -31,46 +31,46 @@ use \stdClass;
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class ValueDefinitionTest extends TestCase {
+class ScalarArrayDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
+   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::__construct
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "NULL"
    */
   public function testConstruct_CanThrowExceptionIfValueIsNull() {
-    new ValueDefinition('123', null);
+    new ScalarArrayDefinition('123', null);
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
+   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::__construct
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "object"
    */
   public function testConstruct_CanThrowExceptionIfValueIsObject() {
-    new ValueDefinition('123', new stdClass());
+    new ScalarArrayDefinition('123', new stdClass());
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ValueDefinition::getId
+   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::__construct
+   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::getId
    */
   public function testGetId_CanSetAndReturnId() {
-    self::assertEquals('foo', (new ValueDefinition('foo', 'bar'))->getId());
+    self::assertEquals('foo', (new ScalarArrayDefinition('foo', 'bar'))->getId());
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ValueDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ValueDefinition::define
+   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::__construct
+   * @covers \derbenni\wp\di\definition\ScalarArrayDefinition::define
    */
   public function testDefine_CanSetAndDefineValue() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
-    self::assertEquals('bar', (new ValueDefinition('foo', 'bar'))->define($container));
+    self::assertEquals('bar', (new ScalarArrayDefinition('foo', 'bar'))->define($container));
   }
 }

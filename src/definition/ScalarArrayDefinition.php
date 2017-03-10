@@ -31,7 +31,7 @@ use \InvalidArgumentException;
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class ValueDefinition implements iDefinition {
+class ScalarArrayDefinition implements iDefinition {
 
   /**
    *

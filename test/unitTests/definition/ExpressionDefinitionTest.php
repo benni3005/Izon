@@ -22,7 +22,7 @@
 namespace derbenni\wp\di\test\unitTests\definition;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\StringDefinition;
+use \derbenni\wp\di\definition\ExpressionDefinition;
 use \derbenni\wp\di\NotFoundException;
 use \derbenni\wp\di\test\TestCase;
 use \RuntimeException;
@@ -31,30 +31,30 @@ use \RuntimeException;
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class StringDefinitionTest extends TestCase {
+class ExpressionDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\StringDefinition::__construct
-   * @covers \derbenni\wp\di\definition\StringDefinition::getId
+   * @covers \derbenni\wp\di\definition\ExpressionDefinition::__construct
+   * @covers \derbenni\wp\di\definition\ExpressionDefinition::getId
    */
   public function testGetId_CanSetAndReturnId() {
-    self::assertEquals('foo', (new StringDefinition('foo', 'bar'))->getId());
+    self::assertEquals('foo', (new ExpressionDefinition('foo', 'bar'))->getId());
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\StringDefinition::__construct
-   * @covers \derbenni\wp\di\definition\StringDefinition::define
+   * @covers \derbenni\wp\di\definition\ExpressionDefinition::__construct
+   * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
    */
   public function testDefine_CanSetAndDefineValueIfNoExpressionHadToBeReplaced() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
-    self::assertEquals('bar', (new StringDefinition('foo', 'bar'))->define($container));
+    self::assertEquals('bar', (new ExpressionDefinition('foo', 'bar'))->define($container));
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\StringDefinition::define
+   * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
    * @expectedException \derbenni\wp\di\DependencyException
    * @expectedExceptionMessage could not be resolved in definition
    */
@@ -66,12 +66,12 @@ class StringDefinitionTest extends TestCase {
       ->with(self::equalTo('baz'))
       ->willThrowException(new NotFoundException());
 
-    (new StringDefinition('foo', 'bar.{baz}'))->define($container);
+    (new ExpressionDefinition('foo', 'bar.{baz}'))->define($container);
   }
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\StringDefinition::define
+   * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
    * @expectedException RuntimeException
    * @expectedExceptionMessage Something unforeseen happened
    * @runInSeparateProcess
@@ -84,6 +84,6 @@ class StringDefinitionTest extends TestCase {
 
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
 
-    (new StringDefinition('foo', 'bar.{baz}'))->define($container);
+    (new ExpressionDefinition('foo', 'bar.{baz}'))->define($container);
   }
 }

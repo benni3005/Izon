@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -31,7 +33,7 @@ use \RuntimeException;
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class StringDefinition implements iDefinition {
+class ExpressionDefinition implements iDefinition {
 
   /**
    *
