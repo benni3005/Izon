@@ -26,8 +26,10 @@ use \Interop\Container\Exception\ContainerException;
 
 /**
  * An exception, that gets thrown when something went wrong in resolving dependencies.
- * 
+ *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
 class DependencyException extends Exception implements ContainerException {
 

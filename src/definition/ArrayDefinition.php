@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -24,22 +26,51 @@ namespace derbenni\wp\di\definition;
 use \derbenni\wp\di\Container;
 
 /**
- * The basic interface for a definition.
+ * A definition used for defining arrays and resolving their entries against other definitions.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  *
  * @since 1.0
  */
-interface iDefinition {
+class ArrayDefinition implements iDefinition {
 
   /**
-   * Returns the value of the definition. This can be of every type in PHP you can imagine.
-   * For scalar types it can be just them or for objects it can be their instance.
    *
-   * @param Container $container The container, that gets used to resolve dependencies.
-   * @return mixed
+   * @var mixed[]
+   */
+  private $array = [];
+
+  /**
+   * Sets the array used in this definition.
+   *
+   * @param mixed[] $array
    *
    * @since 1.0
    */
-  public function define(Container $container);
+  public function __construct(array $array) {
+    $this->array = $array;
+  }
+
+  /**
+   * Returns the array of this definition.
+   * If any other definition is found within it will get resolved beforehand.
+   *
+   * @param Container $container
+   * @return mixed[]
+   *
+   * @since 1.0
+   */
+  public function define(Container $container): array {
+    $result = [];
+
+    foreach($this->array as $key => $value) {
+      if($value instanceof iDefinition) {
+        $result[$key] = $value->define($container);
+      }else {
+        $result[$key] = $value;
+      }
+    }
+
+    return $result;
+  }
 }

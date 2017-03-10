@@ -29,9 +29,11 @@ use \Interop\Container\Exception\NotFoundException;
 use \RuntimeException;
 
 /**
- * A simple definition, whcih makes it possible to parse strings for expressions and matching them against other definitions.
+ * A simple definition, which makes it possible to parse strings for expressions and matching them against other definitions.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
 class ExpressionDefinition implements iDefinition {
 

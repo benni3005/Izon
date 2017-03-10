@@ -27,9 +27,11 @@ use \derbenni\wp\di\Container;
 use \InvalidArgumentException;
 
 /**
- * A simple definition for setting scalar values and arrays.
+ * A simple definition for setting scalar values.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
 class ScalarDefinition implements iDefinition {
 
@@ -42,14 +44,14 @@ class ScalarDefinition implements iDefinition {
   /**
    * Sets the scalar value of this definition.
    *
-   * @param mixed $scalar Can only be a scalar type or an array!
+   * @param mixed $scalar Can only be a scalar type!
    * @throws InvalidArgumentException If the value given to the definition is not scalar or an array.
    *
    * @since 1.0
    */
   public function __construct($scalar) {
-    if(!is_scalar($scalar) && !is_array($scalar)) {
-      throw new InvalidArgumentException(sprintf('The value given is neither scalar nor an array. It\'s of the type "%s".', gettype($scalar)));
+    if(!is_scalar($scalar)) {
+      throw new InvalidArgumentException(sprintf('The value given is not scalar. It\'s of the type "%s".', gettype($scalar)));
     }
 
     $this->scalar = $scalar;

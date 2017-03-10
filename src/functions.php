@@ -23,21 +23,29 @@ declare(strict_types = 1);
 
 namespace derbenni\wp\di;
 
+use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
 use \derbenni\wp\di\definition\ScalarDefinition;
+use \InvalidArgumentException;
 
-if(!function_exists('derbenni\wp\di\scalar')) {
+if(!function_exists('derbenni\wp\di\value')) {
 
   /**
    * Helper for defining a scalar or array value.
    *
-   * @param mixed $scalar
-   * @return ScalarDefinition
-   * 
+   * @param mixed $value
+   * @return ArrayDefinition|ScalarDefinition
+   * @throws InvalidArgumentException If neither a scalar value or an array is given.
+   *
    * @since 1.0
    */
-  function scalar($scalar) {
-    return new ScalarDefinition($scalar);
+  function value($value) {
+    if(is_array($value)) {
+      return new ArrayDefinition($value);
+    }elseif(is_scalar($value)) {
+      return new ScalarDefinition($value);
+    }
+    throw new InvalidArgumentException(sprintf('The given value is neither scalar nor an array. It\'s type is "%s".', gettype($value)));
   }
 }
 

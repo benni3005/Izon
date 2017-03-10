@@ -21,11 +21,13 @@
 
 namespace derbenni\wp\di\test\unitTests;
 
+use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
 use \derbenni\wp\di\definition\ScalarDefinition;
 use \derbenni\wp\di\test\TestCase;
+use \stdClass;
 use function \derbenni\wp\di\expression;
-use function \derbenni\wp\di\scalar;
+use function \derbenni\wp\di\value;
 
 /**
  *
@@ -35,10 +37,28 @@ class FunctionsTest extends TestCase {
 
   /**
    *
-   * @covers ::derbenni\wp\di\scalar
+   * @covers ::derbenni\wp\di\value
    */
-  public function testScalar_CanReturnCorrectDefinition() {
-    self::assertInstanceOf(ScalarDefinition::class, scalar('foo'));
+  public function testValue_CanReturnCorrectDefinitionIfScalarValueIsGiven() {
+    self::assertInstanceOf(ScalarDefinition::class, value('foo'));
+  }
+
+  /**
+   *
+   * @covers ::derbenni\wp\di\value
+   */
+  public function testValue_CanReturnCorrectDefinitionIfArrayIsGiven() {
+    self::assertInstanceOf(ArrayDefinition::class, value([]));
+  }
+
+  /**
+   *
+   * @covers ::derbenni\wp\di\value
+   * @expectedException \InvalidArgumentException
+   * @expectedExceptionMessage neither scalar nor an array
+   */
+  public function testValue_CanThrowExceptionIfInvalidValueIsGiven() {
+    self::assertInstanceOf(ArrayDefinition::class, value(new stdClass()));
   }
 
   /**

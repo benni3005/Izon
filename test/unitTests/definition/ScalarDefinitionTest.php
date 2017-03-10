@@ -49,6 +49,17 @@ class ScalarDefinitionTest extends TestCase {
    * @covers \derbenni\wp\di\definition\ScalarDefinition::__construct
    *
    * @expectedException InvalidArgumentException
+   * @expectedExceptionMessage of the type "array"
+   */
+  public function testConstruct_CanThrowExceptionIfValueIsArray() {
+    new ScalarDefinition([]);
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\definition\ScalarDefinition::__construct
+   *
+   * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "object"
    */
   public function testConstruct_CanThrowExceptionIfValueIsObject() {
