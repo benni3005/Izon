@@ -26,8 +26,10 @@ namespace derbenni\wp\di;
 use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\EntryReferenceDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
+use \derbenni\wp\di\definition\ObjectDefinition;
 use \derbenni\wp\di\definition\resolver\ArrayResolver;
 use \derbenni\wp\di\definition\resolver\ExpressionResolver;
+use \derbenni\wp\di\definition\resolver\ObjectResolver;
 use \derbenni\wp\di\definition\ScalarDefinition;
 use \InvalidArgumentException;
 
@@ -70,10 +72,25 @@ if(!function_exists('derbenni\wp\di\expression')) {
   }
 }
 
+if(!function_exists('derbenni\wp\di\object')) {
+
+  /**
+   * Helper for creating an object definition.
+   *
+   * @param string $className The classname of the desired object.
+   * @return ObjectDefinition
+   *
+   * @since 1.0
+   */
+  function object(string $className) {
+    return new ObjectDefinition($className, new ObjectResolver());
+  }
+}
+
 if(!function_exists('derbenni\wp\di\get')) {
 
   /**
-   * Helper for creating a refernce to another definition.
+   * Helper for creating a reference to another definition.
    *
    * @param string $id The ID of the other definition.
    * @return EntryReferenceDefinition

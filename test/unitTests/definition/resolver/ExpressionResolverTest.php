@@ -74,7 +74,7 @@ class ExpressionResolverTest extends TestCase {
   public function testResolve_CanThrowInvalidArgumentExceptionIfInvalidValueGiven() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
 
-    self::assertEquals('bar', (new ExpressionResolver())->resolve(123, $container));
+    (new ExpressionResolver())->resolve(123, $container);
   }
 
   /**

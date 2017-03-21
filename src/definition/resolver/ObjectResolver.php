@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -24,52 +22,40 @@ declare(strict_types = 1);
 namespace derbenni\wp\di\definition\resolver;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\iDefinition;
-use \InvalidArgumentException;
+use \SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class ArrayResolver implements iResolver {
+class ObjectResolver implements iResolver {
 
   /**
-   * Checks if the given value is actually an array.
+   * Checks if the given classname exists.
    *
-   * @param mixed[] $array
+   * @param string $className
    * @return bool
    *
    * @since 1.0
    */
-  public function can($array): bool {
-    return is_array($array);
+  public function can($className): bool {
+    return (is_string($className) && class_exists($className));
   }
 
   /**
-   * Iterates the array and resolves definitions found within. Then returns everything.
+   * Creates a new instance of the class with the given name and returns it.
    *
-   * @param mixed[] $array
+   * @param string $className
    * @param Container $container
-   * @return string
-   * @throws InvalidArgumentException If no array was given.
+   * @return mixed
+   * @throws InvalidArgumentException If no valid classname was given.
    *
    * @since 1.0
    */
-  public function resolve($array, Container $container) {
-    if(!$this->can($array)) {
-      throw new InvalidArgumentException(sprintf('Given array is not an array: %s', print_r($array, true)));
+  public function resolve($className, Container $container) {
+    if(!$this->can($className)) {
+      throw new InvalidArgumentException(sprintf('Given classname "%s" is not a string or does not exist.', print_r($className, true)));
     }
-
-    $result = [];
-
-    foreach($array as $key => $value) {
-      if($value instanceof iDefinition) {
-        $result[$key] = $value->define($container);
-      }else {
-        $result[$key] = $value;
-      }
-    }
-
-    return $result;
+    return new $className;
   }
 }

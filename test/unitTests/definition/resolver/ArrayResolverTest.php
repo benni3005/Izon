@@ -36,7 +36,7 @@ class ArrayResolverTest extends TestCase {
    *
    * @covers \derbenni\wp\di\definition\resolver\ArrayResolver::can
    */
-  public function testCan_ReturnsTrueIfStringGiven() {
+  public function testCan_ReturnsTrueIfArrayGiven() {
     self::assertTrue((new ArrayResolver())->can([]));
   }
 
@@ -44,13 +44,24 @@ class ArrayResolverTest extends TestCase {
    *
    * @covers \derbenni\wp\di\definition\resolver\ArrayResolver::can
    */
-  public function testCan_ReturnsFalseIfNoStringGiven() {
+  public function testCan_ReturnsFalseIfNoArrayGiven() {
     self::assertFalse((new ArrayResolver())->can(123));
     self::assertFalse((new ArrayResolver())->can(123.456));
     self::assertFalse((new ArrayResolver())->can(true));
     self::assertFalse((new ArrayResolver())->can(null));
     self::assertFalse((new ArrayResolver())->can('foo'));
     self::assertFalse((new ArrayResolver())->can(new stdClass()));
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\definition\resolver\ArrayResolver::resolve
+   * @expectedException InvalidArgumentException
+   */
+  public function testResolve_CanThrowInvalidArgumentExceptionIfInvalidValueGiven() {
+    $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
+
+    (new ArrayResolver())->resolve(123, $container);
   }
 
   /**
