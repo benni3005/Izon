@@ -24,6 +24,7 @@ declare(strict_types = 1);
 namespace derbenni\wp\di;
 
 use \derbenni\wp\di\definition\ArrayDefinition;
+use \derbenni\wp\di\definition\EntryReferenceDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
 use \derbenni\wp\di\definition\resolver\ArrayResolver;
 use \derbenni\wp\di\definition\resolver\ExpressionResolver;
@@ -66,5 +67,20 @@ if(!function_exists('derbenni\wp\di\expression')) {
    */
   function expression(string $expression) {
     return new ExpressionDefinition($expression, new ExpressionResolver());
+  }
+}
+
+if(!function_exists('derbenni\wp\di\get')) {
+
+  /**
+   * Helper for creating a refernce to another definition.
+   *
+   * @param string $id The ID of the other definition.
+   * @return EntryReferenceDefinition
+   *
+   * @since 1.0
+   */
+  function get(string $id) {
+    return new EntryReferenceDefinition($id);
   }
 }

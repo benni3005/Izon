@@ -22,11 +22,14 @@
 namespace derbenni\wp\di\test\unitTests;
 
 use \derbenni\wp\di\definition\ArrayDefinition;
+use \derbenni\wp\di\definition\EntryReferenceDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
 use \derbenni\wp\di\definition\ScalarDefinition;
 use \derbenni\wp\di\test\TestCase;
+use \InvalidArgumentException;
 use \stdClass;
 use function \derbenni\wp\di\expression;
+use function \derbenni\wp\di\get;
 use function \derbenni\wp\di\value;
 
 /**
@@ -54,7 +57,7 @@ class FunctionsTest extends TestCase {
   /**
    *
    * @covers ::derbenni\wp\di\value
-   * @expectedException \InvalidArgumentException
+   * @expectedException InvalidArgumentException
    * @expectedExceptionMessage neither scalar nor an array
    */
   public function testValue_CanThrowExceptionIfInvalidValueIsGiven() {
@@ -67,5 +70,13 @@ class FunctionsTest extends TestCase {
    */
   public function testExpression_CanReturnCorrectDefinition() {
     self::assertInstanceOf(ExpressionDefinition::class, expression('foo'));
+  }
+
+  /**
+   *
+   * @covers ::derbenni\wp\di\get
+   */
+  public function testGet_CanReturnCorrectDefinition() {
+    self::assertInstanceOf(EntryReferenceDefinition::class, get('foo'));
   }
 }
