@@ -34,5 +34,8 @@
     "psr-4": {
       "derbenni\\wp\\di\\test\\": "test/"
     }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml --coverage-html build/coverage"
   }
 }
