@@ -24,13 +24,34 @@ declare(strict_types = 1);
 namespace derbenni\wp\di\definition\resolver;
 
 use \derbenni\wp\di\Container;
-use \SebastianBergmann\RecursionContext\InvalidArgumentException;
+use \InvalidArgumentException;
+use \ReflectionClass;
 
 /**
+ * Resolver for objects with dependencies.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
 class ObjectResolver implements iResolver {
+
+  /**
+   *
+   * @var MethodResolver
+   */
+  private $methodResolver = null;
+
+  /**
+   * Sets the resolver for resolving dependencies of class methods.
+   *
+   * @param MethodResolver $methodResolver
+   *
+   * @since 1.0
+   */
+  public function __construct(MethodResolver $methodResolver) {
+    $this->methodResolver = $methodResolver;
+  }
 
   /**
    * Checks if the given classname exists.
@@ -58,6 +79,16 @@ class ObjectResolver implements iResolver {
     if(!$this->can($className)) {
       throw new InvalidArgumentException(sprintf('Given classname "%s" is not a string or does not exist.', print_r($className, true)));
     }
-    return new $className;
+
+    $reflectionClass = new ReflectionClass($className);
+
+    if($reflectionClass->hasMethod('__construct')) {
+      $arguments = $this->methodResolver->resolve($reflectionClass->getConstructor(), $container);
+      $instance = $reflectionClass->newInstanceArgs($arguments);
+    }else {
+      $instance = $reflectionClass->newInstanceWithoutConstructor();
+    }
+
+    return $instance;
   }
 }

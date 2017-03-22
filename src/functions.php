@@ -29,7 +29,9 @@ use \derbenni\wp\di\definition\ExpressionDefinition;
 use \derbenni\wp\di\definition\ObjectDefinition;
 use \derbenni\wp\di\definition\resolver\ArrayResolver;
 use \derbenni\wp\di\definition\resolver\ExpressionResolver;
+use \derbenni\wp\di\definition\resolver\MethodResolver;
 use \derbenni\wp\di\definition\resolver\ObjectResolver;
+use \derbenni\wp\di\definition\resolver\ParameterResolver;
 use \derbenni\wp\di\definition\ScalarDefinition;
 use \InvalidArgumentException;
 
@@ -83,7 +85,7 @@ if(!function_exists('derbenni\wp\di\object')) {
    * @since 1.0
    */
   function object(string $className) {
-    return new ObjectDefinition($className, new ObjectResolver());
+    return new ObjectDefinition($className, new ObjectResolver(new MethodResolver(new ParameterResolver())));
   }
 }
 

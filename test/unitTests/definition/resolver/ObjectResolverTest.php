@@ -22,9 +22,12 @@
 namespace derbenni\wp\di\test\unitTests\definition\resolver;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\wp\di\definition\resolver\MethodResolver;
 use \derbenni\wp\di\definition\resolver\ObjectResolver;
 use \derbenni\wp\di\test\TestCase;
+use \derbenni\wp\di\test\unitTests\definition\resolver\resolverDummy\ObjectResolverTestDummy;
+use \InvalidArgumentException;
+use \ReflectionMethod;
 use \stdClass;
 
 /**
@@ -35,10 +38,32 @@ class ObjectResolverTest extends TestCase {
 
   /**
    *
+   * @var ObjectResolver
+   */
+  private $sut = null;
+
+  protected function setUp() {
+    parent::setUp();
+
+    $this->sut = new ObjectResolver($this->getMockBuilder(MethodResolver::class)->disableOriginalConstructor()->getMock());
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\definition\resolver\ObjectResolver::__construct
+   */
+  public function testConstruct_CanSetDefinitionsInProperty() {
+    $sut = new ObjectResolver($this->getMockBuilder(MethodResolver::class)->disableOriginalConstructor()->getMock());
+
+    self::assertInstanceOf(MethodResolver::class, $this->returnValueOfPrivateProperty($sut, 'methodResolver'));
+  }
+
+  /**
+   *
    * @covers \derbenni\wp\di\definition\resolver\ObjectResolver::can
    */
   public function testCan_ReturnsTrueIfAvailableClassNameGiven() {
-    self::assertTrue((new ObjectResolver())->can(stdClass::class));
+    self::assertTrue($this->sut->can(stdClass::class));
   }
 
   /**
@@ -46,12 +71,12 @@ class ObjectResolverTest extends TestCase {
    * @covers \derbenni\wp\di\definition\resolver\ObjectResolver::can
    */
   public function testCan_ReturnsFalseIfNoStringGiven() {
-    self::assertFalse((new ObjectResolver())->can(123));
-    self::assertFalse((new ObjectResolver())->can(123.456));
-    self::assertFalse((new ObjectResolver())->can(true));
-    self::assertFalse((new ObjectResolver())->can(null));
-    self::assertFalse((new ObjectResolver())->can('foo'));
-    self::assertFalse((new ObjectResolver())->can(new stdClass()));
+    self::assertFalse($this->sut->can(123));
+    self::assertFalse($this->sut->can(123.456));
+    self::assertFalse($this->sut->can(true));
+    self::assertFalse($this->sut->can(null));
+    self::assertFalse($this->sut->can('foo'));
+    self::assertFalse($this->sut->can(new stdClass()));
   }
 
   /**
@@ -59,7 +84,7 @@ class ObjectResolverTest extends TestCase {
    * @covers \derbenni\wp\di\definition\resolver\ObjectResolver::can
    */
   public function testCan_ReturnsFalseIfNotAvailableClassNameGiven() {
-    self::assertFalse((new ObjectResolver())->can(FooBarBaz::class));
+    self::assertFalse($this->sut->can(FooBarBaz::class));
   }
 
   /**
@@ -70,7 +95,7 @@ class ObjectResolverTest extends TestCase {
   public function testResolve_CanThrowInvalidArgumentExceptionIfInvalidValueGiven() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
 
-    (new ObjectResolver())->resolve(123, $container);
+    $this->sut->resolve(123, $container);
   }
 
   /**
@@ -80,6 +105,24 @@ class ObjectResolverTest extends TestCase {
   public function testResolve_CanReturnObjectIfNoDependenciesFound() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
 
-    self::assertInstanceOf(stdClass::class, (new ObjectResolver())->resolve(stdClass::class, $container));
+    self::assertInstanceOf(stdClass::class, $this->sut->resolve(stdClass::class, $container));
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\definition\resolver\ObjectResolver::resolve
+   */
+  public function testResolve_CanReturnObjectIfDependenciesCouldBeResolved() {
+    $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
+
+    $methodResolver = $this->getMockBuilder(MethodResolver::class)->disableOriginalConstructor()->getMock();
+    $methodResolver->expects(self::once())
+      ->method('resolve')
+      ->with(self::isInstanceOf(ReflectionMethod::class), self::identicalTo($container))
+      ->willReturn([1, 2]);
+
+    $sut = new ObjectResolver($methodResolver);
+
+    self::assertInstanceOf(ObjectResolverTestDummy::class, $sut->resolve(ObjectResolverTestDummy::class, $container));
   }
 }
