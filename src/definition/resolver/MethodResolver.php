@@ -24,6 +24,7 @@ declare(strict_types = 1);
 namespace derbenni\wp\di\definition\resolver;
 
 use \derbenni\wp\di\Container;
+use \derbenni\wp\di\definition\resolver\parameter\iParameterResolver;
 use \InvalidArgumentException;
 use \ReflectionMethod;
 
@@ -38,18 +39,18 @@ class MethodResolver implements iResolver {
 
   /**
    *
-   * @var ParameterResolver
+   * @var iParameterResolver
    */
   private $parameterResolver = null;
 
   /**
    * Sets the parameter resolver needed to inspect each parameter of a method.
    *
-   * @param ParameterResolver $parameterResolver
+   * @param iParameterResolver $parameterResolver
    *
    * @since 1.0
    */
-  public function __construct(ParameterResolver $parameterResolver) {
+  public function __construct(iParameterResolver $parameterResolver) {
     $this->parameterResolver = $parameterResolver;
   }
 

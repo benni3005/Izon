@@ -19,19 +19,15 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition\resolver\resolverDummy;
+namespace derbenni\wp\di\test\dummy;
 
 /**
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class MethodResolverTestDummy {
+class ObjectResolverTestDummy {
 
-  public function withParameters($foo, $bar) {
-
-  }
-
-  public function withoutParameters() {
+  public function __construct($foo, $bar) {
 
   }
 }

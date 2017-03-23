@@ -25,7 +25,7 @@ use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\resolver\MethodResolver;
 use \derbenni\wp\di\definition\resolver\ObjectResolver;
 use \derbenni\wp\di\test\TestCase;
-use \derbenni\wp\di\test\unitTests\definition\resolver\resolverDummy\ObjectResolverTestDummy;
+use \derbenni\wp\di\test\dummy\ObjectResolverTestDummy;
 use \InvalidArgumentException;
 use \ReflectionMethod;
 use \stdClass;

@@ -23,11 +23,12 @@ namespace derbenni\wp\di\test\unitTests\definition\resolver;
 
 use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\resolver\MethodResolver;
-use \derbenni\wp\di\definition\resolver\ParameterResolver;
+use \derbenni\wp\di\definition\resolver\parameter\iParameterResolver;
+use \derbenni\wp\di\test\dummy\MethodResolverTestDummy;
 use \derbenni\wp\di\test\TestCase;
-use \derbenni\wp\di\test\unitTests\definition\resolver\resolverDummy\MethodResolverTestDummy;
 use \InvalidArgumentException;
 use \ReflectionMethod;
+use \ReflectionParameter;
 use \stdClass;
 
 /**
@@ -45,7 +46,7 @@ class MethodResolverTest extends TestCase {
   protected function setUp() {
     parent::setUp();
 
-    $this->sut = new MethodResolver($this->getMockBuilder(ParameterResolver::class)->getMock());
+    $this->sut = new MethodResolver($this->getMockForAbstractClass(iParameterResolver::class));
   }
 
   /**
@@ -53,9 +54,9 @@ class MethodResolverTest extends TestCase {
    * @covers \derbenni\wp\di\definition\resolver\MethodResolver::__construct
    */
   public function testConstruct_CanSetDefinitionsInProperty() {
-    $sut = new MethodResolver($this->getMockBuilder(ParameterResolver::class)->getMock());
+    $sut = new MethodResolver($this->getMockForAbstractClass(iParameterResolver::class));
 
-    self::assertInstanceOf(ParameterResolver::class, $this->returnValueOfPrivateProperty($sut, 'parameterResolver'));
+    self::assertInstanceOf(iParameterResolver::class, $this->returnValueOfPrivateProperty($sut, 'parameterResolver'));
   }
 
   /**
@@ -98,10 +99,10 @@ class MethodResolverTest extends TestCase {
     $method = new ReflectionMethod(MethodResolverTestDummy::class, 'withParameters');
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
 
-    $parameterResolver = $this->getMockBuilder(ParameterResolver::class)->getMock();
+    $parameterResolver = $this->getMockForAbstractClass(iParameterResolver::class);
     $parameterResolver->expects(self::exactly(2))
       ->method('resolve')
-      ->with(self::isInstanceOf(\ReflectionParameter::class), self::identicalTo($container), self::equalTo(['foo' => 'bar']))
+      ->with(self::isInstanceOf(ReflectionParameter::class), self::identicalTo($container), self::equalTo(['foo' => 'bar']))
       ->willReturnOnConsecutiveCalls('lorem', 'ipsum');
 
     $sut = new MethodResolver($parameterResolver);

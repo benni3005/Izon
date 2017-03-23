@@ -31,7 +31,11 @@ use \derbenni\wp\di\definition\resolver\ArrayResolver;
 use \derbenni\wp\di\definition\resolver\ExpressionResolver;
 use \derbenni\wp\di\definition\resolver\MethodResolver;
 use \derbenni\wp\di\definition\resolver\ObjectResolver;
-use \derbenni\wp\di\definition\resolver\ParameterResolver;
+use \derbenni\wp\di\definition\resolver\parameter\ClassNameParameterResolver;
+use \derbenni\wp\di\definition\resolver\parameter\ConfiguredIndexedParameterResolver;
+use \derbenni\wp\di\definition\resolver\parameter\ConfiguredNamedParameterResolver;
+use \derbenni\wp\di\definition\resolver\parameter\DefaultValueParameterResolver;
+use \derbenni\wp\di\definition\resolver\parameter\ParameterResolverCollection;
 use \derbenni\wp\di\definition\ScalarDefinition;
 use \InvalidArgumentException;
 
@@ -85,7 +89,13 @@ if(!function_exists('derbenni\wp\di\object')) {
    * @since 1.0
    */
   function object(string $className) {
-    return new ObjectDefinition($className, new ObjectResolver(new MethodResolver(new ParameterResolver())));
+    $parameterResolver = new ParameterResolverCollection([
+      new ConfiguredNamedParameterResolver(),
+      new ConfiguredIndexedParameterResolver(),
+      new ClassNameParameterResolver(),
+      new DefaultValueParameterResolver(),
+    ]);
+    return new ObjectDefinition($className, new ObjectResolver(new MethodResolver($parameterResolver)));
   }
 }
 
