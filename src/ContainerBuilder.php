@@ -51,6 +51,8 @@ class ContainerBuilder {
    * Sets the name of the container class to use for resolving dependencies.
    *
    * @param string $containerClass
+   *
+   * @since 1.0
    */
   public function __construct(string $containerClass = Container::class) {
     $this->containerClass = $containerClass;
@@ -69,6 +71,8 @@ class ContainerBuilder {
    *
    * @param string $path
    * @return self
+   *
+   * @since 1.0
    */
   public function addDefinitionsByPath(string $path): ContainerBuilder {
     foreach(glob($path, GLOB_BRACE) as $configFile) {
@@ -81,6 +85,8 @@ class ContainerBuilder {
    * Builds the container and adds all definitions found within previously set configuration files.
    *
    * @return Container
+   *
+   * @since 1.0
    */
   public function build(): Container {
     return new $this->containerClass(new ObjectDefinitionFactory, $this->definitions);

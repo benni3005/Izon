@@ -28,8 +28,11 @@ use \derbenni\wp\di\definition\iDefinition;
 use \InvalidArgumentException;
 
 /**
+ * Resolver for arrays, whcih also resolves referenced definitions within.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
 class ArrayResolver implements iResolver {
 

@@ -30,6 +30,8 @@ use \derbenni\wp\di\resolver\iResolver;
  * A definition for creating instances of objects.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
 class ObjectDefinition implements iDefinition {
 

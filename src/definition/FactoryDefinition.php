@@ -26,8 +26,11 @@ namespace derbenni\wp\di\definition;
 use \derbenni\wp\di\Container;
 
 /**
+ * Definition for a callable, that can build anything to be returned by the Container.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
 class FactoryDefinition implements iDefinition {
 

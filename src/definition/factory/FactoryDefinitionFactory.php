@@ -28,8 +28,11 @@ use \derbenni\wp\di\definition\iDefinition;
 use \InvalidArgumentException;
 
 /**
+ * Factory for creatin factory definitions.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
 class FactoryDefinitionFactory implements iDefinitionFactory {
 
