@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -19,34 +21,28 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition;
+namespace derbenni\wp\di\definition\factory;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\ObjectDefinition;
-use \derbenni\wp\di\resolver\iResolver;
-use \derbenni\wp\di\test\TestCase;
-use \stdClass;
+use \derbenni\wp\di\definition\iDefinition;
+use \InvalidArgumentException;
 
 /**
+ * A basic interface marking a factory class for creating definitions.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
-class ObjectDefinitionTest extends TestCase {
+interface iDefinitionFactory {
 
   /**
+   * Will create a new definition and pass the given parameters to it, if needed.
    *
-   * @covers \derbenni\wp\di\definition\ObjectDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ObjectDefinition::define
+   * @param array $parameters Contains all needed parameters for passing it to the definition while creating it.
+   * @return iDefinition A ready-to-use instance of the definition.
+   * @throws InvalidArgumentException Thrown if the passed parameters did notch the definitions' needs.
+   *
+   * @since 1.0
    */
-  public function testDefine_CanReturnInstanceOfTheDesiredObject() {
-    $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
-
-    $resolver = $this->getMockForAbstractClass(iResolver::class);
-    $resolver->expects(self::once())
-      ->method('resolve')
-      ->with(self::equalTo(stdClass::class))
-      ->willReturn(new stdClass());
-
-    self::assertInstanceOf(stdClass::class, (new ObjectDefinition(stdClass::class, $resolver))->define($container));
-  }
+  public function make(array $parameters = []): iDefinition;
 }

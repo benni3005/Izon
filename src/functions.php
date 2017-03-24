@@ -27,11 +27,11 @@ use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\EntryReferenceDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
 use \derbenni\wp\di\definition\FactoryDefinition;
-use \derbenni\wp\di\definition\factory\ExpressionFactory;
+use \derbenni\wp\di\definition\factory\ExpressionDefinitionFactory;
 use \derbenni\wp\di\definition\factory\FactoryDefinitionFactory;
-use \derbenni\wp\di\definition\factory\GetFactory;
-use \derbenni\wp\di\definition\factory\ObjectFactory;
-use \derbenni\wp\di\definition\factory\ValueFactory;
+use \derbenni\wp\di\definition\factory\GetDefinitionFactory;
+use \derbenni\wp\di\definition\factory\ObjectDefinitionFactory;
+use \derbenni\wp\di\definition\factory\ValueDefinitionFactory;
 use \derbenni\wp\di\definition\ObjectDefinition;
 use \derbenni\wp\di\definition\ScalarDefinition;
 
@@ -46,7 +46,7 @@ if(!function_exists('derbenni\wp\di\value')) {
    * @since 1.0
    */
   function value($value) {
-    return (new ValueFactory())->make([$value]);
+    return (new ValueDefinitionFactory())->make([$value]);
   }
 }
 
@@ -67,7 +67,7 @@ if(!function_exists('derbenni\wp\di\expression')) {
    * @since 1.0
    */
   function expression(string $expression) {
-    return (new ExpressionFactory())->make([$expression]);
+    return (new ExpressionDefinitionFactory())->make([$expression]);
   }
 }
 
@@ -82,7 +82,7 @@ if(!function_exists('derbenni\wp\di\object')) {
    * @since 1.0
    */
   function object(string $className) {
-    return (new ObjectFactory())->make([$className]);
+    return (new ObjectDefinitionFactory())->make([$className]);
   }
 }
 
@@ -112,6 +112,6 @@ if(!function_exists('derbenni\wp\di\get')) {
    * @since 1.0
    */
   function get(string $id) {
-    return (new GetFactory())->make([$id]);
+    return (new GetDefinitionFactory())->make([$id]);
   }
 }

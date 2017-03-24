@@ -22,7 +22,7 @@
 namespace derbenni\wp\di\test\unitTests;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\factory\iObjectFactory;
+use \derbenni\wp\di\definition\factory\iObjectDefinitionFactory;
 use \derbenni\wp\di\definition\iDefinition;
 use \derbenni\wp\di\test\dummy\ContainerTestDummy;
 use \derbenni\wp\di\test\TestCase;
@@ -40,7 +40,7 @@ class ContainerTest extends TestCase {
    * @covers \derbenni\wp\di\Container::add
    */
   public function testConstruct_CanSetDepenciesInProperties() {
-    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
+    $sut = new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
       'foo' => $this->getMockForAbstractClass(iDefinition::class),
     ]);
 
@@ -49,7 +49,7 @@ class ContainerTest extends TestCase {
 
     self::assertNotEmpty($definitions);
     self::assertInstanceOf(iDefinition::class, $definitions['foo']);
-    self::assertInstanceOf(iObjectFactory::class, $objectFactory);
+    self::assertInstanceOf(iObjectDefinitionFactory::class, $objectFactory);
   }
 
   /**
@@ -61,7 +61,7 @@ class ContainerTest extends TestCase {
    * @expectedExceptionMessage must be of the type string
    */
   public function testConstruct_CanThrowErrorIfInvalidIdIsGiven() {
-    new Container($this->getMockForAbstractClass(iObjectFactory::class), [
+    new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
       123 => $this->getMockForAbstractClass(iDefinition::class),
     ]);
   }
@@ -75,7 +75,7 @@ class ContainerTest extends TestCase {
    * @expectedExceptionMessage must implement interface
    */
   public function testConstruct_CanThrowErrorIfInvalidDefinitionIsGiven() {
-    new Container($this->getMockForAbstractClass(iObjectFactory::class), [
+    new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
       'foo' => 'bar',
     ]);
   }
@@ -85,7 +85,7 @@ class ContainerTest extends TestCase {
    * @covers \derbenni\wp\di\Container::has
    */
   public function testHas_CanReturnTrueIfDefinitionWithIdExists() {
-    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
+    $sut = new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
       'foo' => $this->getMockForAbstractClass(iDefinition::class),
     ]);
 
@@ -97,7 +97,7 @@ class ContainerTest extends TestCase {
    * @covers \derbenni\wp\di\Container::has
    */
   public function testHas_CanReturnFalseIfDefinitionWithIdDoesNotExists() {
-    self::assertFalse((new Container($this->getMockForAbstractClass(iObjectFactory::class), []))->has('foo'));
+    self::assertFalse((new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), []))->has('foo'));
   }
 
   /**
@@ -107,7 +107,7 @@ class ContainerTest extends TestCase {
   public function testHas_CanCaReturnsTrueIfUndefinedClassNameWasRequested() {
     $objectDefinition = $this->getMockForAbstractClass(iDefinition::class);
 
-    $objectFactory = $this->getMockForAbstractClass(iObjectFactory::class);
+    $objectFactory = $this->getMockForAbstractClass(iObjectDefinitionFactory::class);
     $objectFactory->expects(self::once())
       ->method('make')
       ->with([ContainerTestDummy::class])
@@ -128,7 +128,7 @@ class ContainerTest extends TestCase {
       ->method('define')
       ->willReturn('bar');
 
-    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
+    $sut = new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
       'foo' => $definition,
     ]);
 
@@ -145,7 +145,7 @@ class ContainerTest extends TestCase {
       ->method('define')
       ->willReturn('bar');
 
-    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
+    $sut = new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
       'foo' => $definition,
     ]);
 
@@ -161,7 +161,7 @@ class ContainerTest extends TestCase {
    * @expectedExceptionMessage not found in the container
    */
   public function testGet_CanThrowExceptionIfDefinitionWasNotFound() {
-    (new Container($this->getMockForAbstractClass(iObjectFactory::class), []))->get('foo');
+    (new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), []))->get('foo');
   }
 
   /**
@@ -174,7 +174,7 @@ class ContainerTest extends TestCase {
       ->method('define')
       ->willReturn(new ContainerTestDummy());
 
-    $objectFactory = $this->getMockForAbstractClass(iObjectFactory::class);
+    $objectFactory = $this->getMockForAbstractClass(iObjectDefinitionFactory::class);
     $objectFactory->expects(self::once())
       ->method('make')
       ->with([ContainerTestDummy::class])
@@ -195,7 +195,7 @@ class ContainerTest extends TestCase {
       ->method('define')
       ->willReturn('bar');
 
-    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
+    $sut = new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
       'foo' => $definition,
     ]);
 
@@ -211,6 +211,6 @@ class ContainerTest extends TestCase {
    * @expectedExceptionMessage not found in the container
    */
   public function testMake_CanThrowExceptionIfDefinitionWasNotFound() {
-    (new Container($this->getMockForAbstractClass(iObjectFactory::class), []))->make('foo');
+    (new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), []))->make('foo');
   }
 }

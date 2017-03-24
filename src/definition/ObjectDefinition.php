@@ -24,7 +24,7 @@ declare(strict_types = 1);
 namespace derbenni\wp\di\definition;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\resolver\iResolver;
+use \derbenni\wp\di\resolver\iResolver;
 
 /**
  * A definition for creating instances of objects.

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -21,55 +19,46 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition;
+namespace derbenni\wp\di\test\unitTests\definition\factory;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\iResolver;
+use \derbenni\wp\di\definition\ExpressionDefinition;
+use \derbenni\wp\di\definition\factory\ExpressionDefinitionFactory;
+use \derbenni\wp\di\test\TestCase;
 
 /**
- * A definition used for defining arrays and resolving their entries against other definitions.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
- *
- * @since 1.0
  */
-class ArrayDefinition implements iDefinition {
+class ExpressionDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @var mixed[]
+   * @var ExpressionDefinitionFactory
    */
-  private $array = [];
+  private $sut = null;
 
-  /**
-   *
-   * @var iResolver
-   */
-  private $resolver = null;
+  protected function setUp() {
+    parent::setUp();
 
-  /**
-   * Sets the array used in this definition.
-   *
-   * @param mixed[] $array
-   * @param iResolver $resolver
-   *
-   * @since 1.0
-   */
-  public function __construct(array $array, iResolver $resolver) {
-    $this->array = $array;
-    $this->resolver = $resolver;
+    $this->sut = new ExpressionDefinitionFactory();
   }
 
   /**
-   * Returns the array of this definition.
-   * If any other definition is found within it will get resolved beforehand.
    *
-   * @param Container $container
-   * @return mixed[]
-   *
-   * @since 1.0
+   * @covers \derbenni\wp\di\definition\factory\ExpressionDefinitionFactory::make
    */
-  public function define(Container $container): array {
-    return $this->resolver->resolve($this->array, $container);
+  public function testMake_CanCreateDefinition() {
+    self::assertInstanceOf(ExpressionDefinition::class, $this->sut->make(['foo']));
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\definition\factory\ExpressionDefinitionFactory::make
+   *
+   * @expectedException \InvalidArgumentException
+   * @expectedExceptionMessage The given expression is not a string.
+   */
+  public function testMake_ThrowsExceptionIfNoStringAsFirstParameterGiven() {
+    $this->sut->make([123]);
   }
 }

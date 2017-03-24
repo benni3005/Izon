@@ -23,7 +23,7 @@ namespace derbenni\wp\di\test\unitTests\definition;
 
 use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\ExpressionDefinition;
-use \derbenni\wp\di\definition\resolver\iResolver;
+use \derbenni\wp\di\resolver\iResolver;
 use \derbenni\wp\di\DependencyException;
 use \derbenni\wp\di\test\TestCase;
 use \RuntimeException;

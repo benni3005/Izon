@@ -23,34 +23,13 @@ declare(strict_types = 1);
 
 namespace derbenni\wp\di\definition\factory;
 
-use \derbenni\wp\di\definition\FactoryDefinition;
-use \derbenni\wp\di\definition\iDefinition;
-use \InvalidArgumentException;
-
 /**
+ * Interface for marking an object factory, so no actual class has to be used for type hints.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
-class FactoryDefinitionFactory implements iDefinitionFactory {
+interface iObjectDefinitionFactory extends iDefinitionFactory {
 
-  /**
-   * Will create a new factory definition.
-   *
-   * @param array $parameters Only the first parameter will be taken into account for passing it to the definition.
-   * @return iDefinition A ready-to-use instance of the definition.
-   * @throws InvalidArgumentException Thrown if the first given parameter is not a callable.
-   *
-   * @since 1.0
-   */
-  public function make(array $parameters = []): iDefinition {
-    $factory = reset($parameters);
-
-    if(!is_callable($factory)) {
-      throw new InvalidArgumentException(vsprintf('The given factory is not a callable. It\'s type is "%s".', [
-        is_object($factory) ? get_class($factory) : gettype($factory),
-      ]));
-    }
-
-    return new FactoryDefinition($factory);
-  }
 }

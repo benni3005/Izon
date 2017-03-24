@@ -23,34 +23,38 @@ declare(strict_types = 1);
 
 namespace derbenni\wp\di\definition\factory;
 
-use \derbenni\wp\di\definition\FactoryDefinition;
+use \derbenni\wp\di\definition\ExpressionDefinition;
 use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\wp\di\resolver\ExpressionResolver;
 use \InvalidArgumentException;
 
 /**
+ * Class used for creating an expression definition.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
-class FactoryDefinitionFactory implements iDefinitionFactory {
+class ExpressionDefinitionFactory implements iDefinitionFactory {
 
   /**
-   * Will create a new factory definition.
+   * Will create a new expression definition.
    *
    * @param array $parameters Only the first parameter will be taken into account for passing it to the definition.
    * @return iDefinition A ready-to-use instance of the definition.
-   * @throws InvalidArgumentException Thrown if the first given parameter is not a callable.
+   * @throws InvalidArgumentException Thrown if the first given parameter is not a string.
    *
    * @since 1.0
    */
   public function make(array $parameters = []): iDefinition {
-    $factory = reset($parameters);
+    $expression = reset($parameters);
 
-    if(!is_callable($factory)) {
-      throw new InvalidArgumentException(vsprintf('The given factory is not a callable. It\'s type is "%s".', [
-        is_object($factory) ? get_class($factory) : gettype($factory),
+    if(!is_string($expression)) {
+      throw new InvalidArgumentException(vsprintf('The given expression is not a string. It\'s type is "%s".', [
+        is_object($expression) ? get_class($expression) : gettype($expression),
       ]));
     }
 
-    return new FactoryDefinition($factory);
+    return new ExpressionDefinition($expression, new ExpressionResolver());
   }
 }

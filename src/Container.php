@@ -23,7 +23,7 @@ declare(strict_types = 1);
 
 namespace derbenni\wp\di;
 
-use \derbenni\wp\di\definition\factory\iObjectFactory;
+use \derbenni\wp\di\definition\factory\iObjectDefinitionFactory;
 use \derbenni\wp\di\definition\iDefinition;
 use \Interop\Container\ContainerInterface;
 
@@ -62,7 +62,7 @@ class Container implements ContainerInterface {
    *
    * @since 1.0
    */
-  public function __construct(iObjectFactory $objectFactory, array $definitions) {
+  public function __construct(iObjectDefinitionFactory $objectFactory, array $definitions) {
     $this->objectFactory = $objectFactory;
 
     foreach($definitions as $id => $definition) {

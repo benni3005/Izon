@@ -24,7 +24,7 @@ namespace derbenni\wp\di\test\unitTests\definition;
 use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\iDefinition;
-use \derbenni\wp\di\definition\resolver\iResolver;
+use \derbenni\wp\di\resolver\iResolver;
 use \derbenni\wp\di\test\TestCase;
 
 /**

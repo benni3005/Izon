@@ -23,34 +23,42 @@ declare(strict_types = 1);
 
 namespace derbenni\wp\di\definition\factory;
 
-use \derbenni\wp\di\definition\FactoryDefinition;
+use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\wp\di\resolver\ArrayResolver;
+use \derbenni\wp\di\definition\ScalarDefinition;
 use \InvalidArgumentException;
 
 /**
+ * Factory for building definitions for scalar and array values.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
-class FactoryDefinitionFactory implements iDefinitionFactory {
+class ValueDefinitionFactory implements iDefinitionFactory {
 
   /**
-   * Will create a new factory definition.
+   * Will create a new scalar or array definition, based on the given value.
    *
    * @param array $parameters Only the first parameter will be taken into account for passing it to the definition.
    * @return iDefinition A ready-to-use instance of the definition.
-   * @throws InvalidArgumentException Thrown if the first given parameter is not a callable.
+   * @throws InvalidArgumentException Thrown if neither an array nor scalar value were passed as first value in the parameters.
    *
    * @since 1.0
    */
   public function make(array $parameters = []): iDefinition {
-    $factory = reset($parameters);
+    $value = reset($parameters);
 
-    if(!is_callable($factory)) {
-      throw new InvalidArgumentException(vsprintf('The given factory is not a callable. It\'s type is "%s".', [
-        is_object($factory) ? get_class($factory) : gettype($factory),
+    if(!is_array($value) && !is_scalar($value)) {
+      throw new InvalidArgumentException(vsprintf('The given value is neither scalar nor an array. It\'s type is "%s".', [
+        is_object($value) ? get_class($value) : gettype($value),
       ]));
     }
 
-    return new FactoryDefinition($factory);
+    if(is_array($value)) {
+      return new ArrayDefinition($value, new ArrayResolver());
+    }
+    return new ScalarDefinition($value);
   }
 }

@@ -21,55 +21,44 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition;
+namespace derbenni\wp\di\resolver\parameter;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\iResolver;
+use \ReflectionParameter;
 
 /**
- * A definition used for defining arrays and resolving their entries against other definitions.
+ * This resolver is responsible for resolving parameters having a default value.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  *
  * @since 1.0
  */
-class ArrayDefinition implements iDefinition {
+class DefaultValueParameterResolver implements iParameterResolver {
 
   /**
+   * Checks if parameter has a default value.
    *
-   * @var mixed[]
-   */
-  private $array = [];
-
-  /**
-   *
-   * @var iResolver
-   */
-  private $resolver = null;
-
-  /**
-   * Sets the array used in this definition.
-   *
-   * @param mixed[] $array
-   * @param iResolver $resolver
+   * @param ReflectionParameter $parameter The parameter to check itself.
+   * @param mixed[] $arguments The configured arguments for all parameters of a method.
+   * @return bool
    *
    * @since 1.0
    */
-  public function __construct(array $array, iResolver $resolver) {
-    $this->array = $array;
-    $this->resolver = $resolver;
+  public function can(ReflectionParameter $parameter, array $arguments = []): bool {
+    return $parameter->isDefaultValueAvailable();
   }
 
   /**
-   * Returns the array of this definition.
-   * If any other definition is found within it will get resolved beforehand.
+   * Returns the default value of the parameter.
    *
-   * @param Container $container
-   * @return mixed[]
+   * @param ReflectionParameter $parameter The parameter to resolve itself.
+   * @param Container $container Used for building other definitions found when resolving.
+   * @param mixed[] $arguments The configured arguments for all parameters of a method.
+   * @return mixed
    *
    * @since 1.0
    */
-  public function define(Container $container): array {
-    return $this->resolver->resolve($this->array, $container);
+  public function resolve(ReflectionParameter $parameter, Container $container, array $arguments = []) {
+    return $parameter->getDefaultValue();
   }
 }

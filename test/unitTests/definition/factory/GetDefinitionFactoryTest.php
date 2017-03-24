@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -21,36 +19,47 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition\factory;
+namespace derbenni\wp\di\test\unitTests\definition\factory;
 
-use \derbenni\wp\di\definition\FactoryDefinition;
-use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\wp\di\definition\EntryReferenceDefinition;
+use \derbenni\wp\di\definition\factory\GetDefinitionFactory;
+use \derbenni\wp\di\test\TestCase;
 use \InvalidArgumentException;
 
 /**
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class FactoryDefinitionFactory implements iDefinitionFactory {
+class GetDefinitionFactoryTest extends TestCase {
 
   /**
-   * Will create a new factory definition.
    *
-   * @param array $parameters Only the first parameter will be taken into account for passing it to the definition.
-   * @return iDefinition A ready-to-use instance of the definition.
-   * @throws InvalidArgumentException Thrown if the first given parameter is not a callable.
-   *
-   * @since 1.0
+   * @var GetDefinitionFactory
    */
-  public function make(array $parameters = []): iDefinition {
-    $factory = reset($parameters);
+  private $sut = null;
 
-    if(!is_callable($factory)) {
-      throw new InvalidArgumentException(vsprintf('The given factory is not a callable. It\'s type is "%s".', [
-        is_object($factory) ? get_class($factory) : gettype($factory),
-      ]));
-    }
+  protected function setUp() {
+    parent::setUp();
 
-    return new FactoryDefinition($factory);
+    $this->sut = new GetDefinitionFactory();
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\definition\factory\GetDefinitionFactory::make
+   */
+  public function testMake_CanCreateDefinition() {
+    self::assertInstanceOf(EntryReferenceDefinition::class, $this->sut->make(['foo']));
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\definition\factory\GetDefinitionFactory::make
+   *
+   * @expectedException InvalidArgumentException
+   * @expectedExceptionMessage The given ID is not a string.
+   */
+  public function testMake_ThrowsExceptionIfNoStringAsFirstParameterGiven() {
+    $this->sut->make([123]);
   }
 }

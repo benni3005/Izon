@@ -19,34 +19,37 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition;
+namespace derbenni\wp\di\resolver;
 
 use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\ObjectDefinition;
-use \derbenni\wp\di\resolver\iResolver;
-use \derbenni\wp\di\test\TestCase;
-use \stdClass;
 
 /**
+ * Basic interface for definition resolvers.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
+ *
+ * @since 1.0
  */
-class ObjectDefinitionTest extends TestCase {
+interface iResolver {
 
   /**
+   * Checks if the resolver can actually resolve the given value.
    *
-   * @covers \derbenni\wp\di\definition\ObjectDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ObjectDefinition::define
+   * @param mixed $value
+   * @return bool
+   *
+   * @since 1.0
    */
-  public function testDefine_CanReturnInstanceOfTheDesiredObject() {
-    $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
+  public function can($value): bool;
 
-    $resolver = $this->getMockForAbstractClass(iResolver::class);
-    $resolver->expects(self::once())
-      ->method('resolve')
-      ->with(self::equalTo(stdClass::class))
-      ->willReturn(new stdClass());
-
-    self::assertInstanceOf(stdClass::class, (new ObjectDefinition(stdClass::class, $resolver))->define($container));
-  }
+  /**
+   * This method will resolve the given value.
+   *
+   * @param Container $container Used for building other definitions found when resolving.
+   * @return mixed
+   * @throws InvalidArgumentException If invalid value was given.
+   *
+   * @since 1.0
+   */
+  public function resolve($value, Container $container);
 }

@@ -21,9 +21,9 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition\factory;
+namespace derbenni\wp\di\resolver;
 
-use \derbenni\wp\di\definition\FactoryDefinition;
+use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\iDefinition;
 use \InvalidArgumentException;
 
@@ -31,26 +31,45 @@ use \InvalidArgumentException;
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  */
-class FactoryDefinitionFactory implements iDefinitionFactory {
+class ArrayResolver implements iResolver {
 
   /**
-   * Will create a new factory definition.
+   * Checks if the given value is actually an array.
    *
-   * @param array $parameters Only the first parameter will be taken into account for passing it to the definition.
-   * @return iDefinition A ready-to-use instance of the definition.
-   * @throws InvalidArgumentException Thrown if the first given parameter is not a callable.
+   * @param mixed[] $array
+   * @return bool
    *
    * @since 1.0
    */
-  public function make(array $parameters = []): iDefinition {
-    $factory = reset($parameters);
+  public function can($array): bool {
+    return is_array($array);
+  }
 
-    if(!is_callable($factory)) {
-      throw new InvalidArgumentException(vsprintf('The given factory is not a callable. It\'s type is "%s".', [
-        is_object($factory) ? get_class($factory) : gettype($factory),
-      ]));
+  /**
+   * Iterates the array and resolves definitions found within. Then returns everything.
+   *
+   * @param mixed[] $array
+   * @param Container $container
+   * @return string
+   * @throws InvalidArgumentException If no array was given.
+   *
+   * @since 1.0
+   */
+  public function resolve($array, Container $container) {
+    if(!$this->can($array)) {
+      throw new InvalidArgumentException(sprintf('Given array is not an array: %s', print_r($array, true)));
     }
 
-    return new FactoryDefinition($factory);
+    $result = [];
+
+    foreach($array as $key => $value) {
+      if($value instanceof iDefinition) {
+        $result[$key] = $value->define($container);
+      }else {
+        $result[$key] = $value;
+      }
+    }
+
+    return $result;
   }
 }
