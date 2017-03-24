@@ -23,6 +23,7 @@ declare(strict_types = 1);
 
 namespace derbenni\wp\di;
 
+use \derbenni\wp\di\definition\factory\iObjectFactory;
 use \derbenni\wp\di\definition\iDefinition;
 use \Interop\Container\ContainerInterface;
 
@@ -34,6 +35,12 @@ use \Interop\Container\ContainerInterface;
  * @since 1.0
  */
 class Container implements ContainerInterface {
+
+  /**
+   *
+   * @var iObjectFactory
+   */
+  private $objectFactory = null;
 
   /**
    *
@@ -50,11 +57,14 @@ class Container implements ContainerInterface {
   /**
    * Sets the definitions known to this instance of the container.
    *
-   * @param iDefinition[] $definitions
+   * @param iObjectFactory $objectFactory The object factory needed for autowiring objects.
+   * @param iDefinition[] $definitions The configured definitions of the container to resolve later.
    *
    * @since 1.0
    */
-  public function __construct(array $definitions) {
+  public function __construct(iObjectFactory $objectFactory, array $definitions) {
+    $this->objectFactory = $objectFactory;
+
     foreach($definitions as $id => $definition) {
       $this->add($id, $definition);
     }
@@ -122,6 +132,12 @@ class Container implements ContainerInterface {
    * @since 1.0
    */
   public function has($id): bool {
-    return array_key_exists($id, $this->definitions);
+    $exists = array_key_exists($id, $this->definitions);
+
+    if(!$exists && class_exists($id)) {
+      $this->add($id, $this->objectFactory->make([$id]));
+      return true;
+    }
+    return $exists;
   }
 }

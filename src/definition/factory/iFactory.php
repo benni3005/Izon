@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -19,18 +21,28 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di;
+namespace derbenni\wp\di\definition\factory;
 
-use \Exception;
-use \Interop\Container\Exception\NotFoundException as OriginalNotFoundException;
+use \derbenni\wp\di\definition\iDefinition;
+use \InvalidArgumentException;
 
 /**
- * Exception when an ID is requested from the container, which was not defined.
+ * A basic interface marking a factory class for creating definitions.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  *
  * @since 1.0
  */
-class NotFoundException extends Exception implements OriginalNotFoundException {
+interface iFactory {
 
+  /**
+   * Will create a new definition and pass the given parameters to it, if needed.
+   *
+   * @param array $parameters Contains all needed parameters for passing it to the definition while creating it.
+   * @return iDefinition A ready-to-use instance of the definition.
+   * @throws InvalidArgumentException Thrown if the passed parameters did notch the definitions' needs.
+   *
+   * @since 1.0
+   */
+  public function make(array $parameters = []): iDefinition;
 }

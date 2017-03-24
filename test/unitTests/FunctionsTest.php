@@ -27,7 +27,6 @@ use \derbenni\wp\di\definition\ExpressionDefinition;
 use \derbenni\wp\di\definition\ObjectDefinition;
 use \derbenni\wp\di\definition\ScalarDefinition;
 use \derbenni\wp\di\test\TestCase;
-use \InvalidArgumentException;
 use \stdClass;
 use function \derbenni\wp\di\expression;
 use function \derbenni\wp\di\get;
@@ -58,16 +57,6 @@ class FunctionsTest extends TestCase {
 
   /**
    *
-   * @covers ::derbenni\wp\di\value
-   * @expectedException InvalidArgumentException
-   * @expectedExceptionMessage neither scalar nor an array
-   */
-  public function testValue_CanThrowExceptionIfInvalidValueIsGiven() {
-    self::assertInstanceOf(ArrayDefinition::class, value(new stdClass()));
-  }
-
-  /**
-   *
    * @covers ::derbenni\wp\di\expression
    */
   public function testExpression_CanReturnCorrectDefinition() {
@@ -79,7 +68,7 @@ class FunctionsTest extends TestCase {
    * @covers ::derbenni\wp\di\object
    */
   public function testObject_CanReturnCorrectDefinition() {
-    self::assertInstanceOf(ObjectDefinition::class, object('stdClass'));
+    self::assertInstanceOf(ObjectDefinition::class, object(stdClass::class));
   }
 
   /**

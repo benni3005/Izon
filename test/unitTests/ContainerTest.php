@@ -22,7 +22,9 @@
 namespace derbenni\wp\di\test\unitTests;
 
 use \derbenni\wp\di\Container;
+use \derbenni\wp\di\definition\factory\iObjectFactory;
 use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\wp\di\test\dummy\ContainerTestDummy;
 use \derbenni\wp\di\test\TestCase;
 use \TypeError;
 
@@ -37,15 +39,17 @@ class ContainerTest extends TestCase {
    * @covers \derbenni\wp\di\Container::__construct
    * @covers \derbenni\wp\di\Container::add
    */
-  public function testConstruct_CanSetDefinitionsInProperty() {
-    $container = new Container([
+  public function testConstruct_CanSetDepenciesInProperties() {
+    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
       'foo' => $this->getMockForAbstractClass(iDefinition::class),
     ]);
 
-    $definitions = $this->returnValueOfPrivateProperty($container, 'definitions');
+    $definitions = $this->returnValueOfPrivateProperty($sut, 'definitions');
+    $objectFactory = $this->returnValueOfPrivateProperty($sut, 'objectFactory');
 
     self::assertNotEmpty($definitions);
     self::assertInstanceOf(iDefinition::class, $definitions['foo']);
+    self::assertInstanceOf(iObjectFactory::class, $objectFactory);
   }
 
   /**
@@ -57,7 +61,7 @@ class ContainerTest extends TestCase {
    * @expectedExceptionMessage must be of the type string
    */
   public function testConstruct_CanThrowErrorIfInvalidIdIsGiven() {
-    new Container([
+    new Container($this->getMockForAbstractClass(iObjectFactory::class), [
       123 => $this->getMockForAbstractClass(iDefinition::class),
     ]);
   }
@@ -71,7 +75,7 @@ class ContainerTest extends TestCase {
    * @expectedExceptionMessage must implement interface
    */
   public function testConstruct_CanThrowErrorIfInvalidDefinitionIsGiven() {
-    new Container([
+    new Container($this->getMockForAbstractClass(iObjectFactory::class), [
       'foo' => 'bar',
     ]);
   }
@@ -81,11 +85,11 @@ class ContainerTest extends TestCase {
    * @covers \derbenni\wp\di\Container::has
    */
   public function testHas_CanReturnTrueIfDefinitionWithIdExists() {
-    $container = new Container([
+    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
       'foo' => $this->getMockForAbstractClass(iDefinition::class),
     ]);
 
-    self::assertTrue($container->has('foo'));
+    self::assertTrue($sut->has('foo'));
   }
 
   /**
@@ -93,7 +97,25 @@ class ContainerTest extends TestCase {
    * @covers \derbenni\wp\di\Container::has
    */
   public function testHas_CanReturnFalseIfDefinitionWithIdDoesNotExists() {
-    self::assertFalse((new Container([]))->has('foo'));
+    self::assertFalse((new Container($this->getMockForAbstractClass(iObjectFactory::class), []))->has('foo'));
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\Container::has
+   */
+  public function testHas_CanCaReturnsTrueIfUndefinedClassNameWasRequested() {
+    $objectDefinition = $this->getMockForAbstractClass(iDefinition::class);
+
+    $objectFactory = $this->getMockForAbstractClass(iObjectFactory::class);
+    $objectFactory->expects(self::once())
+      ->method('make')
+      ->with([ContainerTestDummy::class])
+      ->willReturn($objectDefinition);
+
+    $sut = new Container($objectFactory, []);
+
+    self::assertTrue($sut->has(ContainerTestDummy::class));
   }
 
   /**
@@ -106,11 +128,11 @@ class ContainerTest extends TestCase {
       ->method('define')
       ->willReturn('bar');
 
-    $container = new Container([
+    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
       'foo' => $definition,
     ]);
 
-    self::assertEquals('bar', $container->get('foo'));
+    self::assertEquals('bar', $sut->get('foo'));
   }
 
   /**
@@ -123,12 +145,12 @@ class ContainerTest extends TestCase {
       ->method('define')
       ->willReturn('bar');
 
-    $container = new Container([
+    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
       'foo' => $definition,
     ]);
 
-    self::assertEquals('bar', $container->get('foo'));
-    self::assertEquals('bar', $container->get('foo'));
+    self::assertEquals('bar', $sut->get('foo'));
+    self::assertEquals('bar', $sut->get('foo'));
   }
 
   /**
@@ -139,7 +161,28 @@ class ContainerTest extends TestCase {
    * @expectedExceptionMessage not found in the container
    */
   public function testGet_CanThrowExceptionIfDefinitionWasNotFound() {
-    (new Container([]))->get('foo');
+    (new Container($this->getMockForAbstractClass(iObjectFactory::class), []))->get('foo');
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\Container::get
+   */
+  public function testGet_CanCanReturnInstanceOfUnconfiguredClassIfResolvable() {
+    $objectDefinition = $this->getMockForAbstractClass(iDefinition::class);
+    $objectDefinition->expects(self::once())
+      ->method('define')
+      ->willReturn(new ContainerTestDummy());
+
+    $objectFactory = $this->getMockForAbstractClass(iObjectFactory::class);
+    $objectFactory->expects(self::once())
+      ->method('make')
+      ->with([ContainerTestDummy::class])
+      ->willReturn($objectDefinition);
+
+    $sut = new Container($objectFactory, []);
+
+    self::assertInstanceOf(ContainerTestDummy::class, $sut->get(ContainerTestDummy::class));
   }
 
   /**
@@ -152,12 +195,12 @@ class ContainerTest extends TestCase {
       ->method('define')
       ->willReturn('bar');
 
-    $container = new Container([
+    $sut = new Container($this->getMockForAbstractClass(iObjectFactory::class), [
       'foo' => $definition,
     ]);
 
-    self::assertEquals('bar', $container->make('foo'));
-    self::assertEquals('bar', $container->make('foo'));
+    self::assertEquals('bar', $sut->make('foo'));
+    self::assertEquals('bar', $sut->make('foo'));
   }
 
   /**
@@ -168,6 +211,6 @@ class ContainerTest extends TestCase {
    * @expectedExceptionMessage not found in the container
    */
   public function testMake_CanThrowExceptionIfDefinitionWasNotFound() {
-    (new Container([]))->make('foo');
+    (new Container($this->getMockForAbstractClass(iObjectFactory::class), []))->make('foo');
   }
 }

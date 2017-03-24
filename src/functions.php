@@ -26,18 +26,12 @@ namespace derbenni\wp\di;
 use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\EntryReferenceDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
+use \derbenni\wp\di\definition\factory\ExpressionFactory;
+use \derbenni\wp\di\definition\factory\GetFactory;
+use \derbenni\wp\di\definition\factory\ObjectFactory;
+use \derbenni\wp\di\definition\factory\ValueFactory;
 use \derbenni\wp\di\definition\ObjectDefinition;
-use \derbenni\wp\di\definition\resolver\ArrayResolver;
-use \derbenni\wp\di\definition\resolver\ExpressionResolver;
-use \derbenni\wp\di\definition\resolver\MethodResolver;
-use \derbenni\wp\di\definition\resolver\ObjectResolver;
-use \derbenni\wp\di\definition\resolver\parameter\ClassNameParameterResolver;
-use \derbenni\wp\di\definition\resolver\parameter\ConfiguredIndexedParameterResolver;
-use \derbenni\wp\di\definition\resolver\parameter\ConfiguredNamedParameterResolver;
-use \derbenni\wp\di\definition\resolver\parameter\DefaultValueParameterResolver;
-use \derbenni\wp\di\definition\resolver\parameter\ParameterResolverCollection;
 use \derbenni\wp\di\definition\ScalarDefinition;
-use \InvalidArgumentException;
 
 if(!function_exists('derbenni\wp\di\value')) {
 
@@ -46,17 +40,11 @@ if(!function_exists('derbenni\wp\di\value')) {
    *
    * @param mixed $value
    * @return ArrayDefinition|ScalarDefinition
-   * @throws InvalidArgumentException If neither a scalar value or an array is given.
    *
    * @since 1.0
    */
   function value($value) {
-    if(is_array($value)) {
-      return new ArrayDefinition($value, new ArrayResolver());
-    }elseif(is_scalar($value)) {
-      return new ScalarDefinition($value);
-    }
-    throw new InvalidArgumentException(sprintf('The given value is neither scalar nor an array. It\'s type is "%s".', gettype($value)));
+    return (new ValueFactory())->make([$value]);
   }
 }
 
@@ -66,7 +54,10 @@ if(!function_exists('derbenni\wp\di\expression')) {
    * Helper for defining an expression.
    *
    * Example:
-   *  'path' => derbenni\wp\di\expression('{basepath}/some-file.txt')
+   *   $definitions = [
+   *     'basepath' => derbenni\wp\di\value('/path/to/somewhere'),
+   *     'path' => derbenni\wp\di\expression('{basepath}/some-file.txt'),
+   *   ];
    *
    * @param string $expression The expression to parse. Use the {} placeholder for referencing other container definitions.
    * @return ExpressionDefinition
@@ -74,7 +65,7 @@ if(!function_exists('derbenni\wp\di\expression')) {
    * @since 1.0
    */
   function expression(string $expression) {
-    return new ExpressionDefinition($expression, new ExpressionResolver());
+    return (new ExpressionFactory())->make([$expression]);
   }
 }
 
@@ -89,13 +80,7 @@ if(!function_exists('derbenni\wp\di\object')) {
    * @since 1.0
    */
   function object(string $className) {
-    $parameterResolver = new ParameterResolverCollection([
-      new ConfiguredNamedParameterResolver(),
-      new ConfiguredIndexedParameterResolver(),
-      new ClassNameParameterResolver(),
-      new DefaultValueParameterResolver(),
-    ]);
-    return new ObjectDefinition($className, new ObjectResolver(new MethodResolver($parameterResolver)));
+    return (new ObjectFactory())->make([$className]);
   }
 }
 
@@ -110,6 +95,6 @@ if(!function_exists('derbenni\wp\di\get')) {
    * @since 1.0
    */
   function get(string $id) {
-    return new EntryReferenceDefinition($id);
+    return (new GetFactory())->make([$id]);
   }
 }

@@ -19,18 +19,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di;
-
-use \Exception;
-use \Interop\Container\Exception\NotFoundException as OriginalNotFoundException;
+namespace derbenni\wp\di\test\dummy;
 
 /**
- * Exception when an ID is requested from the container, which was not defined.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
- *
- * @since 1.0
  */
-class NotFoundException extends Exception implements OriginalNotFoundException {
+class ContainerTestDummy {
 
 }
