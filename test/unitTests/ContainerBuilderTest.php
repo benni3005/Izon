@@ -21,7 +21,10 @@
 
 namespace derbenni\wp\di\test\unitTests;
 
-use PHPUnit\Framework\TestCase;
+use \derbenni\wp\di\Container;
+use \derbenni\wp\di\ContainerBuilder;
+use \derbenni\wp\di\definition\ExpressionDefinition;
+use \derbenni\wp\di\test\TestCase;
 
 /**
  *
@@ -29,7 +32,54 @@ use PHPUnit\Framework\TestCase;
  */
 class ContainerBuilderTest extends TestCase {
 
-  public function test() {
-    self::assertTrue(true);
+  /**
+   *
+   * @covers \derbenni\wp\di\ContainerBuilder::__construct
+   */
+  public function testConstruct_CanSetDefaultContainerClass() {
+    $sut = new ContainerBuilder();
+
+    self::assertEquals(Container::class, $this->returnValueOfPrivateProperty($sut, 'containerClass'));
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\ContainerBuilder::__construct
+   */
+  public function testConstruct_CanSetGivenContainerClass() {
+    $sut = new ContainerBuilder('OtherContainer');
+
+    self::assertEquals('OtherContainer', $this->returnValueOfPrivateProperty($sut, 'containerClass'));
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\ContainerBuilder::addDefinitionsByPath
+   */
+  public function testAddDefinitionsByPath_CanReadAndSaveDefinitionsFound() {
+    $sut = new ContainerBuilder();
+    $sut->addDefinitionsByPath(__DIR__ . '/../dummy/config/*.php');
+
+    $definitions = $this->returnValueOfPrivateProperty($sut, 'definitions');
+
+    self::assertNotEmpty($definitions);
+    self::assertInstanceOf(ExpressionDefinition::class, $definitions['foo']);
+  }
+
+  /**
+   *
+   * @covers \derbenni\wp\di\ContainerBuilder::build
+   */
+  public function testBuild_CanBuildContainerWithDefinitions() {
+    $sut = new ContainerBuilder();
+    $sut->addDefinitionsByPath(__DIR__ . '/../dummy/config/*.php');
+
+    $container = $sut->build();
+    $definitions = $this->returnValueOfPrivateProperty($sut, 'definitions');
+
+    self::assertInstanceOf(Container::class, $container);
+
+    self::assertNotEmpty($definitions);
+    self::assertInstanceOf(ExpressionDefinition::class, $definitions['foo']);
   }
 }

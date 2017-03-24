@@ -56,10 +56,11 @@ if(!function_exists('derbenni\wp\di\expression')) {
    * Helper for defining an expression.
    *
    * Example:
-   *   $definitions = [
-   *     'basepath' => derbenni\wp\di\value('/path/to/somewhere'),
-   *     'path' => derbenni\wp\di\expression('{basepath}/some-file.txt'),
-   *   ];
+   * 
+   * $definitions = [
+   *   'basepath' => derbenni\wp\di\value('/path/to/somewhere'),
+   *   'path' => derbenni\wp\di\expression('{basepath}/some-file.txt'),
+   * ];
    *
    * @param string $expression The expression to parse. Use the {} placeholder for referencing other container definitions.
    * @return ExpressionDefinition
