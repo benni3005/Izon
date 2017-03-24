@@ -26,4 +26,4 @@ script:
   - composer test
 
 after_success:
-  - travis_retry php vendor/bin/coveralls -v
+  - if [[ $(phpenv version-name) == '7.1' ]]; then php vendor/bin/coveralls -v; fi
