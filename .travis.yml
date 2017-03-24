@@ -19,7 +19,7 @@ matrix:
 
 install:
   - composer self-update
-  - composer require satooshi/php-coveralls
+  - composer require satooshi/php-coveralls --ignore-platform-reqs
   - composer install --prefer-source --ignore-platform-reqs
 
 script:
