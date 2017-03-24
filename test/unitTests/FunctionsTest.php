@@ -21,14 +21,17 @@
 
 namespace derbenni\wp\di\test\unitTests;
 
+use \derbenni\wp\di\Container;
 use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\EntryReferenceDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
+use \derbenni\wp\di\definition\FactoryDefinition;
 use \derbenni\wp\di\definition\ObjectDefinition;
 use \derbenni\wp\di\definition\ScalarDefinition;
 use \derbenni\wp\di\test\TestCase;
 use \stdClass;
 use function \derbenni\wp\di\expression;
+use function \derbenni\wp\di\factory;
 use function \derbenni\wp\di\get;
 use function \derbenni\wp\di\object;
 use function \derbenni\wp\di\value;
@@ -69,6 +72,16 @@ class FunctionsTest extends TestCase {
    */
   public function testObject_CanReturnCorrectDefinition() {
     self::assertInstanceOf(ObjectDefinition::class, object(stdClass::class));
+  }
+
+  /**
+   *
+   * @covers ::derbenni\wp\di\factory
+   */
+  public function testFactory_CanReturnCorrectDefinition() {
+    self::assertInstanceOf(FactoryDefinition::class, factory(function(Container $container) {
+        return null;
+      }));
   }
 
   /**

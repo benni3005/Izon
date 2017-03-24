@@ -23,37 +23,34 @@ declare(strict_types = 1);
 
 namespace derbenni\wp\di\definition\factory;
 
-use \derbenni\wp\di\definition\EntryReferenceDefinition;
+use \derbenni\wp\di\definition\FactoryDefinition;
 use \derbenni\wp\di\definition\iDefinition;
 use \InvalidArgumentException;
 
 /**
- * Factory for creating entry reference definitions.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
- *
- * @since 1.0
  */
-class GetFactory implements iFactory {
+class FactoryDefinitionFactory implements iFactory {
 
   /**
-   * Will create a new entry reference definition.
+   * Will create a new factory definition.
    *
    * @param array $parameters Only the first parameter will be taken into account for passing it to the definition.
    * @return iDefinition A ready-to-use instance of the definition.
-   * @throws InvalidArgumentException Thrown if the first given parameter is not a string.
+   * @throws InvalidArgumentException Thrown if the first given parameter is not a callable.
    *
    * @since 1.0
    */
   public function make(array $parameters = []): iDefinition {
-    $id = reset($parameters);
+    $factory = reset($parameters);
 
-    if(!is_string($id)) {
-      throw new InvalidArgumentException(vsprintf('The given ID is not a string. It\'s type is "%s".', [
-        is_object($id) ? get_class($id) : gettype($id),
+    if(!is_callable($factory)) {
+      throw new InvalidArgumentException(vsprintf('The given factory is not a callable. It\'s type is "%s".', [
+        is_object($factory) ? get_class($factory) : gettype($factory),
       ]));
     }
 
-    return new EntryReferenceDefinition($id);
+    return new FactoryDefinition($factory);
   }
 }

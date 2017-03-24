@@ -21,39 +21,43 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition\factory;
+namespace derbenni\wp\di\definition;
 
-use \derbenni\wp\di\definition\EntryReferenceDefinition;
-use \derbenni\wp\di\definition\iDefinition;
-use \InvalidArgumentException;
+use \derbenni\wp\di\Container;
 
 /**
- * Factory for creating entry reference definitions.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
- *
- * @since 1.0
  */
-class GetFactory implements iFactory {
+class FactoryDefinition implements iDefinition {
 
   /**
-   * Will create a new entry reference definition.
    *
-   * @param array $parameters Only the first parameter will be taken into account for passing it to the definition.
-   * @return iDefinition A ready-to-use instance of the definition.
-   * @throws InvalidArgumentException Thrown if the first given parameter is not a string.
+   * @var callable
+   */
+  private $factory = null;
+
+  /**
+   * Sets the callable to return the value of the definition.
+   *
+   * @param string $factory
    *
    * @since 1.0
    */
-  public function make(array $parameters = []): iDefinition {
-    $id = reset($parameters);
+  public function __construct(callable $factory) {
+    $this->factory = $factory;
+  }
 
-    if(!is_string($id)) {
-      throw new InvalidArgumentException(vsprintf('The given ID is not a string. It\'s type is "%s".', [
-        is_object($id) ? get_class($id) : gettype($id),
-      ]));
-    }
-
-    return new EntryReferenceDefinition($id);
+  /**
+   * Returns the value returned by the factory.
+   * Will pass the container itself to the factory callable.
+   *
+   * @param Container $container Used for replacing expressions in the form of "{foo.bar-baz}".
+   * @return mixed The return value of the factory callable.
+   *
+   * @since 1.0
+   */
+  public function define(Container $container) {
+    return call_user_func_array($this->factory, [$container]);
   }
 }

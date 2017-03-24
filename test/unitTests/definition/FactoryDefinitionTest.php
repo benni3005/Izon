@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * WP-DI: A lightweight dependency injection container for WordPress.
  * Copyright (C) 2017 Benjamin Hofmann
@@ -21,15 +19,30 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition\factory;
+namespace derbenni\wp\di\test\unitTests\definition;
+
+use \derbenni\wp\di\Container;
+use \derbenni\wp\di\definition\FactoryDefinition;
+use \derbenni\wp\di\test\TestCase;
 
 /**
- * Interface for marking an object factory, so no actual class has to be used for type hints.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
- *
- * @since 1.0
  */
-interface iObjectFactory extends iFactory {
+class FactoryDefinitionTest extends TestCase {
 
+  /**
+   *
+   * @covers \derbenni\wp\di\definition\FactoryDefinition::__construct
+   * @covers \derbenni\wp\di\definition\FactoryDefinition::define
+   */
+  public function testDefine_CanSetAndDefineValue() {
+    $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
+
+    $callable = function(Container $container) {
+      return $container;
+    };
+
+    self::assertSame($container, (new FactoryDefinition($callable))->define($container));
+  }
 }

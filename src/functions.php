@@ -26,7 +26,9 @@ namespace derbenni\wp\di;
 use \derbenni\wp\di\definition\ArrayDefinition;
 use \derbenni\wp\di\definition\EntryReferenceDefinition;
 use \derbenni\wp\di\definition\ExpressionDefinition;
+use \derbenni\wp\di\definition\FactoryDefinition;
 use \derbenni\wp\di\definition\factory\ExpressionFactory;
+use \derbenni\wp\di\definition\factory\FactoryDefinitionFactory;
 use \derbenni\wp\di\definition\factory\GetFactory;
 use \derbenni\wp\di\definition\factory\ObjectFactory;
 use \derbenni\wp\di\definition\factory\ValueFactory;
@@ -81,6 +83,21 @@ if(!function_exists('derbenni\wp\di\object')) {
    */
   function object(string $className) {
     return (new ObjectFactory())->make([$className]);
+  }
+}
+
+if(!function_exists('derbenni\wp\di\factory')) {
+
+  /**
+   * Helper for creating a factory definition.
+   *
+   * @param callable $factory The callable to create the value of the definition.
+   * @return FactoryDefinition
+   *
+   * @since 1.0
+   */
+  function factory(callable $factory) {
+    return (new FactoryDefinitionFactory())->make([$factory]);
   }
 }
 
