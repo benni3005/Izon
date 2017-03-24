@@ -37,17 +37,17 @@ class EntryReferenceDefinition implements iDefinition {
    *
    * @var string
    */
-  private $id = '';
+  private $name = '';
 
   /**
    * Sets the ID of the definition to reference.
    *
-   * @param string $id
+   * @param string $name
    *
    * @since 1.0
    */
-  public function __construct(string $id) {
-    $this->id = $id;
+  public function __construct(string $name) {
+    $this->name = $name;
   }
 
   /**
@@ -59,6 +59,6 @@ class EntryReferenceDefinition implements iDefinition {
    * @since 1.0
    */
   public function define(Container $container) {
-    return $container->get($this->id);
+    return $container->get($this->name);
   }
 }

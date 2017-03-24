@@ -46,14 +46,14 @@ class GetDefinitionFactory implements iDefinitionFactory {
    * @since 1.0
    */
   public function make(array $parameters = []): iDefinition {
-    $id = reset($parameters);
+    $name = reset($parameters);
 
-    if(!is_string($id)) {
+    if(!is_string($name)) {
       throw new InvalidArgumentException(vsprintf('The given ID is not a string. It\'s type is "%s".', [
-        is_object($id) ? get_class($id) : gettype($id),
+        is_object($name) ? get_class($name) : gettype($name),
       ]));
     }
 
-    return new EntryReferenceDefinition($id);
+    return new EntryReferenceDefinition($name);
   }
 }

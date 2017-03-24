@@ -67,9 +67,8 @@ class ClassNameParameterResolver implements iParameterResolver {
     }catch(Exception $exception) {
       if($parameter->isOptional()) {
         return $parameter->getDefaultValue();
-      }else {
-        throw new DependencyException(sprintf('Class "%s" could not be resolved.', $parameter->getClass()->getName()), 0, $exception);
       }
+      throw new DependencyException(sprintf('Class "%s" could not be resolved.', $parameter->getClass()->getName()), 0, $exception);
     }
   }
 }

@@ -68,9 +68,9 @@ class ArrayResolver implements iResolver {
     foreach($array as $key => $value) {
       if($value instanceof iDefinition) {
         $result[$key] = $value->define($container);
-      }else {
-        $result[$key] = $value;
+        continue;
       }
+      $result[$key] = $value;
     }
 
     return $result;

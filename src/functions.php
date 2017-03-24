@@ -56,7 +56,7 @@ if(!function_exists('derbenni\wp\di\expression')) {
    * Helper for defining an expression.
    *
    * Example:
-   * 
+   *
    * $definitions = [
    *   'basepath' => derbenni\wp\di\value('/path/to/somewhere'),
    *   'path' => derbenni\wp\di\expression('{basepath}/some-file.txt'),
@@ -107,12 +107,12 @@ if(!function_exists('derbenni\wp\di\get')) {
   /**
    * Helper for creating a reference to another definition.
    *
-   * @param string $id The ID of the other definition.
+   * @param string $name The ID of the other definition.
    * @return EntryReferenceDefinition
    *
    * @since 1.0
    */
-  function get(string $id) {
-    return (new GetDefinitionFactory())->make([$id]);
+  function get(string $name) {
+    return (new GetDefinitionFactory())->make([$name]);
   }
 }

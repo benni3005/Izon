@@ -73,14 +73,14 @@ class Container implements ContainerInterface {
   /**
    * Adds a definition to the container.
    *
-   * @param string $id
+   * @param string $name
    * @param iDefinition $definition
    * @return self
    *
    * @since 1.0
    */
-  public function add(string $id, iDefinition $definition): Container {
-    $this->definitions[$id] = $definition;
+  public function add(string $name, iDefinition $definition): Container {
+    $this->definitions[$name] = $definition;
     return $this;
   }
 
@@ -88,54 +88,54 @@ class Container implements ContainerInterface {
    * Returns the value of a definition by using its ID as key.
    * If it was requested before it will get cached for further requests. If you need the value to be built every time use ::make instead.
    *
-   * @param string $id
+   * @param string $name
    * @return mixed
    * @throws NotFoundException If no definition could be found for the given ID.
    *
    * @since 1.0
    */
-  public function get($id) {
-    if(!$this->has($id)) {
-      throw new NotFoundException(sprintf('ID "%s" was not found in the container.', $id));
+  public function get($name) {
+    if(!$this->has($name)) {
+      throw new NotFoundException(sprintf('ID "%s" was not found in the container.', $name));
     }
 
-    if(!array_key_exists($id, $this->cache)) {
-      $this->cache[$id] = $this->definitions[$id]->define($this);
+    if(!array_key_exists($name, $this->cache)) {
+      $this->cache[$name] = $this->definitions[$name]->define($this);
     }
 
-    return $this->cache[$id];
+    return $this->cache[$name];
   }
 
   /**
    * Returns the value of a definition by using its ID as key.
    * This method will always rebuild the value and not use caching.
    *
-   * @param string $id
+   * @param string $name
    * @return mixed
    * @throws NotFoundException If no definition could be found for the given ID.
    *
    * @since 1.0
    */
-  public function make($id) {
-    if(!$this->has($id)) {
-      throw new NotFoundException(sprintf('ID "%s" was not found in the container.', $id));
+  public function make($name) {
+    if(!$this->has($name)) {
+      throw new NotFoundException(sprintf('ID "%s" was not found in the container.', $name));
     }
-    return $this->definitions[$id]->define($this);
+    return $this->definitions[$name]->define($this);
   }
 
   /**
    * Returns whether there is any entry in the definitions for the given ID.
    *
-   * @param string $id
+   * @param string $name
    * @return bool
    *
    * @since 1.0
    */
-  public function has($id): bool {
-    $exists = array_key_exists($id, $this->definitions);
+  public function has($name): bool {
+    $exists = array_key_exists($name, $this->definitions);
 
-    if(!$exists && class_exists($id)) {
-      $this->add($id, $this->objectFactory->make([$id]));
+    if(!$exists && class_exists($name)) {
+      $this->add($name, $this->objectFactory->make([$name]));
       return true;
     }
     return $exists;

@@ -84,11 +84,8 @@ class ObjectResolver implements iResolver {
 
     if($reflectionClass->hasMethod('__construct')) {
       $arguments = $this->methodResolver->resolve($reflectionClass->getConstructor(), $container);
-      $instance = $reflectionClass->newInstanceArgs($arguments);
-    }else {
-      $instance = $reflectionClass->newInstanceWithoutConstructor();
+      return $reflectionClass->newInstanceArgs($arguments);
     }
-
-    return $instance;
+    return $reflectionClass->newInstanceWithoutConstructor();
   }
 }
