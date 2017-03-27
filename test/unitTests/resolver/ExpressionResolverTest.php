@@ -19,12 +19,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\resolver;
+namespace derbenni\izon\test\unitTests\resolver;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\ExpressionResolver;
-use \derbenni\wp\di\DependencyException;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\resolver\ExpressionResolver;
+use \derbenni\izon\DependencyException;
+use \derbenni\izon\test\TestCase;
 use \InvalidArgumentException;
 use \RuntimeException;
 use \stdClass;
@@ -37,7 +37,7 @@ class ExpressionResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ExpressionResolver::can
+   * @covers \derbenni\izon\resolver\ExpressionResolver::can
    */
   public function testCan_ReturnsTrueIfStringGiven() {
     self::assertTrue((new ExpressionResolver())->can('bar'));
@@ -45,7 +45,7 @@ class ExpressionResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ExpressionResolver::can
+   * @covers \derbenni\izon\resolver\ExpressionResolver::can
    */
   public function testCan_ReturnsFalseIfNoStringGiven() {
     self::assertFalse((new ExpressionResolver())->can(123));
@@ -58,7 +58,7 @@ class ExpressionResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ExpressionResolver::resolve
+   * @covers \derbenni\izon\resolver\ExpressionResolver::resolve
    */
   public function testResolve_CanResolveValueIfNoExpressionHadToBeReplaced() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
@@ -68,7 +68,7 @@ class ExpressionResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ExpressionResolver::resolve
+   * @covers \derbenni\izon\resolver\ExpressionResolver::resolve
    * @expectedException InvalidArgumentException
    */
   public function testResolve_CanThrowInvalidArgumentExceptionIfInvalidValueGiven() {
@@ -79,8 +79,8 @@ class ExpressionResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ExpressionResolver::resolve
-   * @expectedException \derbenni\wp\di\DependencyException
+   * @covers \derbenni\izon\resolver\ExpressionResolver::resolve
+   * @expectedException \derbenni\izon\DependencyException
    */
   public function testResolve_CanThrowDependencyExceptionIfExpressionCouldNotBeResolved() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
@@ -95,8 +95,8 @@ class ExpressionResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ExpressionResolver::resolve
-   * @expectedException RuntimeException
+   * @covers \derbenni\izon\resolver\ExpressionResolver::resolve
+   * @expectedException \RuntimeException
    * @runInSeparateProcess
    */
   public function testResolve_CanThrowRuntimeExceptionIfExpressionCouldNotBeResolved() {

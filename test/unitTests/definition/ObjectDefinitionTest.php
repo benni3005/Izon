@@ -19,12 +19,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition;
+namespace derbenni\izon\test\unitTests\definition;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\ObjectDefinition;
-use \derbenni\wp\di\resolver\iResolver;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\ObjectDefinition;
+use \derbenni\izon\resolver\iResolver;
+use \derbenni\izon\test\TestCase;
 use \stdClass;
 
 /**
@@ -35,8 +35,8 @@ class ObjectDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ObjectDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ObjectDefinition::define
+   * @covers \derbenni\izon\definition\ObjectDefinition::__construct
+   * @covers \derbenni\izon\definition\ObjectDefinition::define
    */
   public function testDefine_CanReturnInstanceOfTheDesiredObject() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();

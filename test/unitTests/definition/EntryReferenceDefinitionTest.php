@@ -19,11 +19,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition;
+namespace derbenni\izon\test\unitTests\definition;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\EntryReferenceDefinition;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\EntryReferenceDefinition;
+use \derbenni\izon\test\TestCase;
 
 /**
  *
@@ -33,8 +33,8 @@ class EntryReferenceDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\EntryReferenceDefinition::__construct
-   * @covers \derbenni\wp\di\definition\EntryReferenceDefinition::define
+   * @covers \derbenni\izon\definition\EntryReferenceDefinition::__construct
+   * @covers \derbenni\izon\definition\EntryReferenceDefinition::define
    */
   public function testDefine_CanSetAndDefineValue() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();

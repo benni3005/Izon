@@ -19,11 +19,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition\factory;
+namespace derbenni\izon\test\unitTests\definition\factory;
 
-use \derbenni\wp\di\definition\factory\ObjectDefinitionFactory;
-use \derbenni\wp\di\definition\ObjectDefinition;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\definition\factory\ObjectDefinitionFactory;
+use \derbenni\izon\definition\ObjectDefinition;
+use \derbenni\izon\test\TestCase;
 use \InvalidArgumentException;
 use \stdClass;
 
@@ -47,7 +47,7 @@ class ObjectDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\ObjectDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\ObjectDefinitionFactory::make
    */
   public function testMake_CanCreateDefinition() {
     self::assertInstanceOf(ObjectDefinition::class, $this->sut->make([stdClass::class]));
@@ -55,7 +55,7 @@ class ObjectDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\ObjectDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\ObjectDefinitionFactory::make
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage The given classname is not a string.
@@ -66,7 +66,7 @@ class ObjectDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\ObjectDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\ObjectDefinitionFactory::make
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage The given classname "FooBarBazClass" is unknown.

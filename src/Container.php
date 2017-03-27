@@ -21,10 +21,10 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di;
+namespace derbenni\izon;
 
-use \derbenni\wp\di\definition\factory\iObjectDefinitionFactory;
-use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\izon\definition\factory\iObjectDefinitionFactory;
+use \derbenni\izon\definition\iDefinition;
 use \Interop\Container\ContainerInterface;
 
 /**

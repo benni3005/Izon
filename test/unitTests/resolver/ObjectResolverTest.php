@@ -19,13 +19,13 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\resolver;
+namespace derbenni\izon\test\unitTests\resolver;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\MethodResolver;
-use \derbenni\wp\di\resolver\ObjectResolver;
-use \derbenni\wp\di\test\TestCase;
-use \derbenni\wp\di\test\dummy\ObjectResolverTestDummy;
+use \derbenni\izon\Container;
+use \derbenni\izon\resolver\MethodResolver;
+use \derbenni\izon\resolver\ObjectResolver;
+use \derbenni\izon\test\TestCase;
+use \derbenni\izon\test\dummy\ObjectResolverTestDummy;
 use \InvalidArgumentException;
 use \ReflectionMethod;
 use \stdClass;
@@ -50,7 +50,7 @@ class ObjectResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ObjectResolver::__construct
+   * @covers \derbenni\izon\resolver\ObjectResolver::__construct
    */
   public function testConstruct_CanSetDefinitionsInProperty() {
     $sut = new ObjectResolver($this->getMockBuilder(MethodResolver::class)->disableOriginalConstructor()->getMock());
@@ -60,7 +60,7 @@ class ObjectResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ObjectResolver::can
+   * @covers \derbenni\izon\resolver\ObjectResolver::can
    */
   public function testCan_ReturnsTrueIfAvailableClassNameGiven() {
     self::assertTrue($this->sut->can(stdClass::class));
@@ -68,7 +68,7 @@ class ObjectResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ObjectResolver::can
+   * @covers \derbenni\izon\resolver\ObjectResolver::can
    */
   public function testCan_ReturnsFalseIfNoStringGiven() {
     self::assertFalse($this->sut->can(123));
@@ -81,7 +81,7 @@ class ObjectResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ObjectResolver::can
+   * @covers \derbenni\izon\resolver\ObjectResolver::can
    */
   public function testCan_ReturnsFalseIfNotAvailableClassNameGiven() {
     self::assertFalse($this->sut->can(FooBarBaz::class));
@@ -89,7 +89,7 @@ class ObjectResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ObjectResolver::resolve
+   * @covers \derbenni\izon\resolver\ObjectResolver::resolve
    * @expectedException InvalidArgumentException
    */
   public function testResolve_CanThrowInvalidArgumentExceptionIfInvalidValueGiven() {
@@ -100,7 +100,7 @@ class ObjectResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ObjectResolver::resolve
+   * @covers \derbenni\izon\resolver\ObjectResolver::resolve
    */
   public function testResolve_CanReturnObjectIfNoDependenciesFound() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
@@ -110,7 +110,7 @@ class ObjectResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ObjectResolver::resolve
+   * @covers \derbenni\izon\resolver\ObjectResolver::resolve
    */
   public function testResolve_CanReturnObjectIfDependenciesCouldBeResolved() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();

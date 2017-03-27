@@ -19,22 +19,22 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests;
+namespace derbenni\izon\test\unitTests;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\ArrayDefinition;
-use \derbenni\wp\di\definition\EntryReferenceDefinition;
-use \derbenni\wp\di\definition\ExpressionDefinition;
-use \derbenni\wp\di\definition\FactoryDefinition;
-use \derbenni\wp\di\definition\ObjectDefinition;
-use \derbenni\wp\di\definition\ScalarDefinition;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\ArrayDefinition;
+use \derbenni\izon\definition\EntryReferenceDefinition;
+use \derbenni\izon\definition\ExpressionDefinition;
+use \derbenni\izon\definition\FactoryDefinition;
+use \derbenni\izon\definition\ObjectDefinition;
+use \derbenni\izon\definition\ScalarDefinition;
+use \derbenni\izon\test\TestCase;
 use \stdClass;
-use function \derbenni\wp\di\expression;
-use function \derbenni\wp\di\factory;
-use function \derbenni\wp\di\get;
-use function \derbenni\wp\di\object;
-use function \derbenni\wp\di\value;
+use function \derbenni\izon\expression;
+use function \derbenni\izon\factory;
+use function \derbenni\izon\get;
+use function \derbenni\izon\object;
+use function \derbenni\izon\value;
 
 /**
  *
@@ -44,7 +44,7 @@ class FunctionsTest extends TestCase {
 
   /**
    *
-   * @covers ::derbenni\wp\di\value
+   * @covers ::derbenni\izon\value
    */
   public function testValue_CanReturnCorrectDefinitionIfScalarValueIsGiven() {
     self::assertInstanceOf(ScalarDefinition::class, value('foo'));
@@ -52,7 +52,7 @@ class FunctionsTest extends TestCase {
 
   /**
    *
-   * @covers ::derbenni\wp\di\value
+   * @covers ::derbenni\izon\value
    */
   public function testValue_CanReturnCorrectDefinitionIfArrayIsGiven() {
     self::assertInstanceOf(ArrayDefinition::class, value([]));
@@ -60,7 +60,7 @@ class FunctionsTest extends TestCase {
 
   /**
    *
-   * @covers ::derbenni\wp\di\expression
+   * @covers ::derbenni\izon\expression
    */
   public function testExpression_CanReturnCorrectDefinition() {
     self::assertInstanceOf(ExpressionDefinition::class, expression('foo'));
@@ -68,7 +68,7 @@ class FunctionsTest extends TestCase {
 
   /**
    *
-   * @covers ::derbenni\wp\di\object
+   * @covers ::derbenni\izon\object
    */
   public function testObject_CanReturnCorrectDefinition() {
     self::assertInstanceOf(ObjectDefinition::class, object(stdClass::class));
@@ -76,7 +76,7 @@ class FunctionsTest extends TestCase {
 
   /**
    *
-   * @covers ::derbenni\wp\di\factory
+   * @covers ::derbenni\izon\factory
    */
   public function testFactory_CanReturnCorrectDefinition() {
     self::assertInstanceOf(FactoryDefinition::class, factory(function(Container $container) {
@@ -86,7 +86,7 @@ class FunctionsTest extends TestCase {
 
   /**
    *
-   * @covers ::derbenni\wp\di\get
+   * @covers ::derbenni\izon\get
    */
   public function testGet_CanReturnCorrectDefinition() {
     self::assertInstanceOf(EntryReferenceDefinition::class, get('foo'));

@@ -19,11 +19,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition;
+namespace derbenni\izon\test\unitTests\definition;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\ScalarDefinition;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\ScalarDefinition;
+use \derbenni\izon\test\TestCase;
 use \InvalidArgumentException;
 use \stdClass;
 
@@ -35,7 +35,7 @@ class ScalarDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ScalarDefinition::__construct
+   * @covers \derbenni\izon\definition\ScalarDefinition::__construct
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "NULL"
@@ -46,7 +46,7 @@ class ScalarDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ScalarDefinition::__construct
+   * @covers \derbenni\izon\definition\ScalarDefinition::__construct
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "array"
@@ -57,7 +57,7 @@ class ScalarDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ScalarDefinition::__construct
+   * @covers \derbenni\izon\definition\ScalarDefinition::__construct
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage of the type "object"
@@ -68,8 +68,8 @@ class ScalarDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ScalarDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ScalarDefinition::define
+   * @covers \derbenni\izon\definition\ScalarDefinition::__construct
+   * @covers \derbenni\izon\definition\ScalarDefinition::define
    */
   public function testDefine_CanSetAndDefineValue() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();

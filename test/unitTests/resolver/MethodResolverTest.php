@@ -19,13 +19,13 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\resolver;
+namespace derbenni\izon\test\unitTests\resolver;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\MethodResolver;
-use \derbenni\wp\di\resolver\parameter\iParameterResolver;
-use \derbenni\wp\di\test\dummy\MethodResolverTestDummy;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\resolver\MethodResolver;
+use \derbenni\izon\resolver\parameter\iParameterResolver;
+use \derbenni\izon\test\dummy\MethodResolverTestDummy;
+use \derbenni\izon\test\TestCase;
 use \InvalidArgumentException;
 use \ReflectionMethod;
 use \ReflectionParameter;
@@ -51,7 +51,7 @@ class MethodResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\MethodResolver::__construct
+   * @covers \derbenni\izon\resolver\MethodResolver::__construct
    */
   public function testConstruct_CanSetDefinitionsInProperty() {
     $sut = new MethodResolver($this->getMockForAbstractClass(iParameterResolver::class));
@@ -61,7 +61,7 @@ class MethodResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\MethodResolver::can
+   * @covers \derbenni\izon\resolver\MethodResolver::can
    */
   public function testCan_ReturnsTrueIfReflectionParameterGiven() {
     self::assertTrue($this->sut->can(new ReflectionMethod(MethodResolverTestDummy::class, 'withoutParameters')));
@@ -69,7 +69,7 @@ class MethodResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\MethodResolver::can
+   * @covers \derbenni\izon\resolver\MethodResolver::can
    */
   public function testCan_ReturnsFalseIfNoReflectionParameterGiven() {
     self::assertFalse($this->sut->can(123));
@@ -82,7 +82,7 @@ class MethodResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\MethodResolver::resolve
+   * @covers \derbenni\izon\resolver\MethodResolver::resolve
    * @expectedException InvalidArgumentException
    */
   public function testResolve_CanThrowInvalidArgumentExceptionIfInvalidValueGiven() {
@@ -93,7 +93,7 @@ class MethodResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\MethodResolver::resolve
+   * @covers \derbenni\izon\resolver\MethodResolver::resolve
    */
   public function testResolve_CanReturnArgumentsResolvedByParameterResolver() {
     $method = new ReflectionMethod(MethodResolverTestDummy::class, 'withParameters');

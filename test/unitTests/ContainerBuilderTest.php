@@ -19,12 +19,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests;
+namespace derbenni\izon\test\unitTests;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\ContainerBuilder;
-use \derbenni\wp\di\definition\ExpressionDefinition;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\ContainerBuilder;
+use \derbenni\izon\definition\ExpressionDefinition;
+use \derbenni\izon\test\TestCase;
 
 /**
  *
@@ -34,7 +34,7 @@ class ContainerBuilderTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\ContainerBuilder::__construct
+   * @covers \derbenni\izon\ContainerBuilder::__construct
    */
   public function testConstruct_CanSetDefaultContainerClass() {
     $sut = new ContainerBuilder();
@@ -44,7 +44,7 @@ class ContainerBuilderTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\ContainerBuilder::__construct
+   * @covers \derbenni\izon\ContainerBuilder::__construct
    */
   public function testConstruct_CanSetGivenContainerClass() {
     $sut = new ContainerBuilder('OtherContainer');
@@ -54,7 +54,7 @@ class ContainerBuilderTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\ContainerBuilder::addDefinitionsByPath
+   * @covers \derbenni\izon\ContainerBuilder::addDefinitionsByPath
    */
   public function testAddDefinitionsByPath_CanReadAndSaveDefinitionsFound() {
     $sut = new ContainerBuilder();
@@ -68,7 +68,7 @@ class ContainerBuilderTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\ContainerBuilder::build
+   * @covers \derbenni\izon\ContainerBuilder::build
    */
   public function testBuild_CanBuildContainerWithDefinitions() {
     $sut = new ContainerBuilder();

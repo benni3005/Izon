@@ -19,11 +19,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition\factory;
+namespace derbenni\izon\test\unitTests\definition\factory;
 
-use \derbenni\wp\di\definition\ExpressionDefinition;
-use \derbenni\wp\di\definition\factory\ExpressionDefinitionFactory;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\definition\ExpressionDefinition;
+use \derbenni\izon\definition\factory\ExpressionDefinitionFactory;
+use \derbenni\izon\test\TestCase;
 
 /**
  *
@@ -45,7 +45,7 @@ class ExpressionDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\ExpressionDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\ExpressionDefinitionFactory::make
    */
   public function testMake_CanCreateDefinition() {
     self::assertInstanceOf(ExpressionDefinition::class, $this->sut->make(['foo']));
@@ -53,7 +53,7 @@ class ExpressionDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\ExpressionDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\ExpressionDefinitionFactory::make
    *
    * @expectedException \InvalidArgumentException
    * @expectedExceptionMessage The given expression is not a string.

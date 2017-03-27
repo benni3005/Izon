@@ -19,13 +19,13 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition;
+namespace derbenni\izon\test\unitTests\definition;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\ArrayDefinition;
-use \derbenni\wp\di\definition\iDefinition;
-use \derbenni\wp\di\resolver\iResolver;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\ArrayDefinition;
+use \derbenni\izon\definition\iDefinition;
+use \derbenni\izon\resolver\iResolver;
+use \derbenni\izon\test\TestCase;
 
 /**
  *
@@ -35,8 +35,8 @@ class ArrayDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ArrayDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ArrayDefinition::define
+   * @covers \derbenni\izon\definition\ArrayDefinition::__construct
+   * @covers \derbenni\izon\definition\ArrayDefinition::define
    */
   public function testDefine_CanSetAndDefineValueIfNoSubDefinitionsGiven() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
@@ -52,8 +52,8 @@ class ArrayDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ArrayDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ArrayDefinition::define
+   * @covers \derbenni\izon\definition\ArrayDefinition::__construct
+   * @covers \derbenni\izon\definition\ArrayDefinition::define
    */
   public function testDefine_CanSetAndDefineValueIfSubDefinitionsGiven() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();

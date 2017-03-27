@@ -21,21 +21,21 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di;
+namespace derbenni\izon;
 
-use \derbenni\wp\di\definition\ArrayDefinition;
-use \derbenni\wp\di\definition\EntryReferenceDefinition;
-use \derbenni\wp\di\definition\ExpressionDefinition;
-use \derbenni\wp\di\definition\FactoryDefinition;
-use \derbenni\wp\di\definition\factory\ExpressionDefinitionFactory;
-use \derbenni\wp\di\definition\factory\FactoryDefinitionFactory;
-use \derbenni\wp\di\definition\factory\GetDefinitionFactory;
-use \derbenni\wp\di\definition\factory\ObjectDefinitionFactory;
-use \derbenni\wp\di\definition\factory\ValueDefinitionFactory;
-use \derbenni\wp\di\definition\ObjectDefinition;
-use \derbenni\wp\di\definition\ScalarDefinition;
+use \derbenni\izon\definition\ArrayDefinition;
+use \derbenni\izon\definition\EntryReferenceDefinition;
+use \derbenni\izon\definition\ExpressionDefinition;
+use \derbenni\izon\definition\FactoryDefinition;
+use \derbenni\izon\definition\factory\ExpressionDefinitionFactory;
+use \derbenni\izon\definition\factory\FactoryDefinitionFactory;
+use \derbenni\izon\definition\factory\GetDefinitionFactory;
+use \derbenni\izon\definition\factory\ObjectDefinitionFactory;
+use \derbenni\izon\definition\factory\ValueDefinitionFactory;
+use \derbenni\izon\definition\ObjectDefinition;
+use \derbenni\izon\definition\ScalarDefinition;
 
-if(!function_exists('derbenni\wp\di\value')) {
+if(!function_exists('derbenni\izon\value')) {
 
   /**
    * Helper for defining a scalar or array value.
@@ -50,7 +50,7 @@ if(!function_exists('derbenni\wp\di\value')) {
   }
 }
 
-if(!function_exists('derbenni\wp\di\expression')) {
+if(!function_exists('derbenni\izon\expression')) {
 
   /**
    * Helper for defining an expression.
@@ -58,8 +58,8 @@ if(!function_exists('derbenni\wp\di\expression')) {
    * Example:
    *
    * $definitions = [
-   *   'basepath' => derbenni\wp\di\value('/path/to/somewhere'),
-   *   'path' => derbenni\wp\di\expression('{basepath}/some-file.txt'),
+   *   'basepath' => derbenni\izon\value('/path/to/somewhere'),
+   *   'path' => derbenni\izon\expression('{basepath}/some-file.txt'),
    * ];
    *
    * @param string $expression The expression to parse. Use the {} placeholder for referencing other container definitions.
@@ -72,7 +72,7 @@ if(!function_exists('derbenni\wp\di\expression')) {
   }
 }
 
-if(!function_exists('derbenni\wp\di\object')) {
+if(!function_exists('derbenni\izon\object')) {
 
   /**
    * Helper for creating an object definition.
@@ -87,7 +87,7 @@ if(!function_exists('derbenni\wp\di\object')) {
   }
 }
 
-if(!function_exists('derbenni\wp\di\factory')) {
+if(!function_exists('derbenni\izon\factory')) {
 
   /**
    * Helper for creating a factory definition.
@@ -102,7 +102,7 @@ if(!function_exists('derbenni\wp\di\factory')) {
   }
 }
 
-if(!function_exists('derbenni\wp\di\get')) {
+if(!function_exists('derbenni\izon\get')) {
 
   /**
    * Helper for creating a reference to another definition.

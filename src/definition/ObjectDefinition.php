@@ -21,10 +21,10 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition;
+namespace derbenni\izon\definition;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\iResolver;
+use \derbenni\izon\Container;
+use \derbenni\izon\resolver\iResolver;
 
 /**
  * A definition for creating instances of objects.

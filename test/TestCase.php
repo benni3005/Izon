@@ -19,7 +19,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test;
+namespace derbenni\izon\test;
 
 use \phpmock\phpunit\PHPMock;
 use \PHPUnit\Framework\TestCase as OriginalTestCase;
@@ -59,7 +59,7 @@ abstract class TestCase extends OriginalTestCase {
    */
   public function getBuiltInFunctionMock($name) {
     $originalNamespace = (new ReflectionClass($this))->getNamespaceName();
-    $actualNamespace = str_replace('di\test\unitTests', 'di', $originalNamespace);
+    $actualNamespace = str_replace('izon\test\unitTests', 'izon', $originalNamespace);
 
     return $this->getFunctionMock($actualNamespace, $name);
   }

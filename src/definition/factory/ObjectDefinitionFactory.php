@@ -21,17 +21,17 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition\factory;
+namespace derbenni\izon\definition\factory;
 
-use \derbenni\wp\di\definition\iDefinition;
-use \derbenni\wp\di\definition\ObjectDefinition;
-use \derbenni\wp\di\resolver\MethodResolver;
-use \derbenni\wp\di\resolver\ObjectResolver;
-use \derbenni\wp\di\resolver\parameter\ClassNameParameterResolver;
-use \derbenni\wp\di\resolver\parameter\ConfiguredIndexedParameterResolver;
-use \derbenni\wp\di\resolver\parameter\ConfiguredNamedParameterResolver;
-use \derbenni\wp\di\resolver\parameter\DefaultValueParameterResolver;
-use \derbenni\wp\di\resolver\parameter\ParameterResolverCollection;
+use \derbenni\izon\definition\iDefinition;
+use \derbenni\izon\definition\ObjectDefinition;
+use \derbenni\izon\resolver\MethodResolver;
+use \derbenni\izon\resolver\ObjectResolver;
+use \derbenni\izon\resolver\parameter\ClassNameParameterResolver;
+use \derbenni\izon\resolver\parameter\ConfiguredIndexedParameterResolver;
+use \derbenni\izon\resolver\parameter\ConfiguredNamedParameterResolver;
+use \derbenni\izon\resolver\parameter\DefaultValueParameterResolver;
+use \derbenni\izon\resolver\parameter\ParameterResolverCollection;
 use \InvalidArgumentException;
 
 /**

@@ -19,13 +19,13 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\resolver\resolver;
+namespace derbenni\izon\test\unitTests\resolver\resolver;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\parameter\iParameterResolver;
-use \derbenni\wp\di\resolver\parameter\ParameterResolverCollection;
-use \derbenni\wp\di\test\dummy\ParameterResolverTestDummy;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\resolver\parameter\iParameterResolver;
+use \derbenni\izon\resolver\parameter\ParameterResolverCollection;
+use \derbenni\izon\test\dummy\ParameterResolverTestDummy;
+use \derbenni\izon\test\TestCase;
 use \ReflectionParameter;
 
 /**
@@ -36,8 +36,8 @@ class ParameterResolverCollectionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ParameterResolverCollection::__construct
-   * @covers \derbenni\wp\di\resolver\parameter\ParameterResolverCollection::add
+   * @covers \derbenni\izon\resolver\parameter\ParameterResolverCollection::__construct
+   * @covers \derbenni\izon\resolver\parameter\ParameterResolverCollection::add
    */
   public function testConstruct_CanSetParameterResolversInProperty() {
     $sut = new ParameterResolverCollection([
@@ -52,7 +52,7 @@ class ParameterResolverCollectionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ParameterResolverCollection::can
+   * @covers \derbenni\izon\resolver\parameter\ParameterResolverCollection::can
    */
   public function testCan_ReturnsTrueIfAnyKindOfParameterIsGiven() {
     self::assertTrue((new ParameterResolverCollection([]))->can(new ReflectionParameter([ParameterResolverTestDummy::class, 'unspecifiedParameter'], 'foo'), []));
@@ -60,7 +60,7 @@ class ParameterResolverCollectionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ParameterResolverCollection::resolve
+   * @covers \derbenni\izon\resolver\parameter\ParameterResolverCollection::resolve
    */
   public function testResolve_CanIterateThroughParameterResolversAndReturnTheirValue() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'unspecifiedParameter'], 'foo');
@@ -82,8 +82,8 @@ class ParameterResolverCollectionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ParameterResolverCollection::resolve
-   * @expectedException \derbenni\wp\di\DependencyException
+   * @covers \derbenni\izon\resolver\parameter\ParameterResolverCollection::resolve
+   * @expectedException \derbenni\izon\DependencyException
    */
   public function testResolve_ThrowsDependencyExceptionIfNoParameterResolverCouldResolveTheParameter() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'unspecifiedParameter'], 'foo');

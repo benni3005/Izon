@@ -19,9 +19,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition;
+namespace derbenni\izon\definition;
 
-use \derbenni\wp\di\Container;
+use \derbenni\izon\Container;
 
 /**
  * The basic interface for a definition.

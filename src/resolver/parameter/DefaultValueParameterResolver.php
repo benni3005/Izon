@@ -21,9 +21,9 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\resolver\parameter;
+namespace derbenni\izon\resolver\parameter;
 
-use \derbenni\wp\di\Container;
+use \derbenni\izon\Container;
 use \ReflectionParameter;
 
 /**

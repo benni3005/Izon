@@ -19,7 +19,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di;
+namespace derbenni\izon;
 
 use \Exception;
 use \Interop\Container\Exception\ContainerException;

@@ -21,10 +21,10 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di;
+namespace derbenni\izon;
 
-use \derbenni\wp\di\definition\factory\ObjectDefinitionFactory;
-use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\izon\definition\factory\ObjectDefinitionFactory;
+use \derbenni\izon\definition\iDefinition;
 
 /**
  * Helper to create and configure a Container.
@@ -65,8 +65,8 @@ class ContainerBuilder {
    * Example:
    *
    * return [
-   *   'basepath' => derbenni\wp\di\value('/path/to/somewhere'),
-   *   'path' => derbenni\wp\di\expression('{basepath}/some-file.txt'),
+   *   'basepath' => derbenni\izon\value('/path/to/somewhere'),
+   *   'path' => derbenni\izon\expression('{basepath}/some-file.txt'),
    * ];
    *
    * @param string $path

@@ -1,7 +1,7 @@
 {
-  "name": "derbenni/wp-di",
+  "name": "derbenni/izon",
   "type": "library",
-  "description": "A lightweight dependency injection container for WordPress.",
+  "description": "A lightweight dependency injection container with autowiring.",
   "keywords": [
     "di",
     "dependency injection",
@@ -24,7 +24,7 @@
   },
   "autoload": {
     "psr-4": {
-      "derbenni\\wp\\di\\": "src/"
+      "derbenni\\izon\\": "src/"
     },
     "files": [
       "src/functions.php"
@@ -32,7 +32,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "derbenni\\wp\\di\\test\\": "test/"
+      "derbenni\\izon\\test\\": "test/"
     }
   },
   "scripts": {

@@ -19,11 +19,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition;
+namespace derbenni\izon\test\unitTests\definition;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\FactoryDefinition;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\FactoryDefinition;
+use \derbenni\izon\test\TestCase;
 
 /**
  *
@@ -33,8 +33,8 @@ class FactoryDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\FactoryDefinition::__construct
-   * @covers \derbenni\wp\di\definition\FactoryDefinition::define
+   * @covers \derbenni\izon\definition\FactoryDefinition::__construct
+   * @covers \derbenni\izon\definition\FactoryDefinition::define
    */
   public function testDefine_CanSetAndDefineValue() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();

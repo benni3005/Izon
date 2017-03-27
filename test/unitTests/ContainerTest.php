@@ -19,13 +19,13 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests;
+namespace derbenni\izon\test\unitTests;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\factory\iObjectDefinitionFactory;
-use \derbenni\wp\di\definition\iDefinition;
-use \derbenni\wp\di\test\dummy\ContainerTestDummy;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\factory\iObjectDefinitionFactory;
+use \derbenni\izon\definition\iDefinition;
+use \derbenni\izon\test\dummy\ContainerTestDummy;
+use \derbenni\izon\test\TestCase;
 use \TypeError;
 
 /**
@@ -36,8 +36,8 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::__construct
-   * @covers \derbenni\wp\di\Container::add
+   * @covers \derbenni\izon\Container::__construct
+   * @covers \derbenni\izon\Container::add
    */
   public function testConstruct_CanSetDepenciesInProperties() {
     $sut = new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
@@ -54,8 +54,8 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::__construct
-   * @covers \derbenni\wp\di\Container::add
+   * @covers \derbenni\izon\Container::__construct
+   * @covers \derbenni\izon\Container::add
    *
    * @expectedException TypeError
    * @expectedExceptionMessage must be of the type string
@@ -68,8 +68,8 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::__construct
-   * @covers \derbenni\wp\di\Container::add
+   * @covers \derbenni\izon\Container::__construct
+   * @covers \derbenni\izon\Container::add
    *
    * @expectedException TypeError
    * @expectedExceptionMessage must implement interface
@@ -82,7 +82,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::has
+   * @covers \derbenni\izon\Container::has
    */
   public function testHas_CanReturnTrueIfDefinitionWithIdExists() {
     $sut = new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
@@ -94,7 +94,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::has
+   * @covers \derbenni\izon\Container::has
    */
   public function testHas_CanReturnFalseIfDefinitionWithIdDoesNotExists() {
     self::assertFalse((new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), []))->has('foo'));
@@ -102,7 +102,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::has
+   * @covers \derbenni\izon\Container::has
    */
   public function testHas_CanCaReturnsTrueIfUndefinedClassNameWasRequested() {
     $objectDefinition = $this->getMockForAbstractClass(iDefinition::class);
@@ -120,7 +120,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::get
+   * @covers \derbenni\izon\Container::get
    */
   public function testGet_CanReturnValueFromDefinitionIfDefinitionExists() {
     $definition = $this->getMockForAbstractClass(iDefinition::class);
@@ -137,7 +137,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::get
+   * @covers \derbenni\izon\Container::get
    */
   public function testGet_CanReturnValueFromCacheIfDefinitionWasBuiltBefore() {
     $definition = $this->getMockForAbstractClass(iDefinition::class);
@@ -155,9 +155,9 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::get
+   * @covers \derbenni\izon\Container::get
    *
-   * @expectedException \derbenni\wp\di\NotFoundException
+   * @expectedException \derbenni\izon\NotFoundException
    * @expectedExceptionMessage not found in the container
    */
   public function testGet_CanThrowExceptionIfDefinitionWasNotFound() {
@@ -166,7 +166,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::get
+   * @covers \derbenni\izon\Container::get
    */
   public function testGet_CanCanReturnInstanceOfUnconfiguredClassIfResolvable() {
     $objectDefinition = $this->getMockForAbstractClass(iDefinition::class);
@@ -187,7 +187,7 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::make
+   * @covers \derbenni\izon\Container::make
    */
   public function testMake_CanReturnValueFromDefinitionEveryTimeItIsRequested() {
     $definition = $this->getMockForAbstractClass(iDefinition::class);
@@ -205,9 +205,9 @@ class ContainerTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\Container::make
+   * @covers \derbenni\izon\Container::make
    *
-   * @expectedException \derbenni\wp\di\NotFoundException
+   * @expectedException \derbenni\izon\NotFoundException
    * @expectedExceptionMessage not found in the container
    */
   public function testMake_CanThrowExceptionIfDefinitionWasNotFound() {

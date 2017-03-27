@@ -19,12 +19,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\resolver\resolver;
+namespace derbenni\izon\test\unitTests\resolver\resolver;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\parameter\ConfiguredIndexedParameterResolver;
-use \derbenni\wp\di\test\dummy\ParameterResolverTestDummy;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\resolver\parameter\ConfiguredIndexedParameterResolver;
+use \derbenni\izon\test\dummy\ParameterResolverTestDummy;
+use \derbenni\izon\test\TestCase;
 use \ReflectionParameter;
 
 /**
@@ -47,7 +47,7 @@ class ConfiguredIndexedParameterResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ConfiguredIndexedParameterResolver::can
+   * @covers \derbenni\izon\resolver\parameter\ConfiguredIndexedParameterResolver::can
    */
   public function testCan_ReturnsTrueIfTheGivenArgumentsContaineTheParameter() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'unspecifiedParameter'], 'foo');
@@ -57,7 +57,7 @@ class ConfiguredIndexedParameterResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ConfiguredIndexedParameterResolver::can
+   * @covers \derbenni\izon\resolver\parameter\ConfiguredIndexedParameterResolver::can
    */
   public function testCan_ReturnsFalseIfTheArgumentsDoNotContaineTheParameter() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'unspecifiedParameter'], 'foo');
@@ -67,7 +67,7 @@ class ConfiguredIndexedParameterResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ConfiguredIndexedParameterResolver::resolve
+   * @covers \derbenni\izon\resolver\parameter\ConfiguredIndexedParameterResolver::resolve
    */
   public function testResolve_CanReturnTheConfiguredArguemntValue() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'unspecifiedParameter'], 'foo');

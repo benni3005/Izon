@@ -19,13 +19,13 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition;
+namespace derbenni\izon\test\unitTests\definition;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\ExpressionDefinition;
-use \derbenni\wp\di\resolver\iResolver;
-use \derbenni\wp\di\DependencyException;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\ExpressionDefinition;
+use \derbenni\izon\resolver\iResolver;
+use \derbenni\izon\DependencyException;
+use \derbenni\izon\test\TestCase;
 use \RuntimeException;
 
 /**
@@ -36,8 +36,8 @@ class ExpressionDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ExpressionDefinition::__construct
-   * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
+   * @covers \derbenni\izon\definition\ExpressionDefinition::__construct
+   * @covers \derbenni\izon\definition\ExpressionDefinition::define
    */
   public function testDefine_CanSetAndDefineValueIfNoExpressionHadToBeReplaced() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
@@ -53,8 +53,8 @@ class ExpressionDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
-   * @expectedException \derbenni\wp\di\DependencyException
+   * @covers \derbenni\izon\definition\ExpressionDefinition::define
+   * @expectedException \derbenni\izon\DependencyException
    */
   public function testDefine_CanThrowDependencyExceptionIfExpressionCouldNotBeResolved() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
@@ -70,7 +70,7 @@ class ExpressionDefinitionTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\ExpressionDefinition::define
+   * @covers \derbenni\izon\definition\ExpressionDefinition::define
    * @expectedException RuntimeException
    */
   public function testDefine_CanThrowRuntimeExceptionIfExpressionCouldNotBeResolved() {

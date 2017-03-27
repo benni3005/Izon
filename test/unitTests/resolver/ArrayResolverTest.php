@@ -19,11 +19,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\resolver;
+namespace derbenni\izon\test\unitTests\resolver;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\ArrayResolver;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\resolver\ArrayResolver;
+use \derbenni\izon\test\TestCase;
 use \stdClass;
 
 /**
@@ -34,7 +34,7 @@ class ArrayResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ArrayResolver::can
+   * @covers \derbenni\izon\resolver\ArrayResolver::can
    */
   public function testCan_ReturnsTrueIfArrayGiven() {
     self::assertTrue((new ArrayResolver())->can([]));
@@ -42,7 +42,7 @@ class ArrayResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ArrayResolver::can
+   * @covers \derbenni\izon\resolver\ArrayResolver::can
    */
   public function testCan_ReturnsFalseIfNoArrayGiven() {
     self::assertFalse((new ArrayResolver())->can(123));
@@ -55,7 +55,7 @@ class ArrayResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ArrayResolver::resolve
+   * @covers \derbenni\izon\resolver\ArrayResolver::resolve
    * @expectedException InvalidArgumentException
    */
   public function testResolve_CanThrowInvalidArgumentExceptionIfInvalidValueGiven() {
@@ -66,7 +66,7 @@ class ArrayResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ArrayResolver::resolve
+   * @covers \derbenni\izon\resolver\ArrayResolver::resolve
    */
   public function testResolve_CanReturnArrayIfNoDefinitionsFound() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
@@ -76,12 +76,12 @@ class ArrayResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\ArrayResolver::resolve
+   * @covers \derbenni\izon\resolver\ArrayResolver::resolve
    */
   public function testResolve_CanReturnResolvedArrayWhenDefinitionsFound() {
     $container = $this->getMockBuilder(Container::class)->disableOriginalConstructor()->getMock();
 
-    $definition = $this->getMockForAbstractClass(\derbenni\wp\di\definition\iDefinition::class);
+    $definition = $this->getMockForAbstractClass(\derbenni\izon\definition\iDefinition::class);
     $definition->expects(self::once())
       ->method('define')
       ->with(self::equalTo($container))

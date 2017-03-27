@@ -19,12 +19,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition\factory;
+namespace derbenni\izon\test\unitTests\definition\factory;
 
-use \derbenni\wp\di\definition\ArrayDefinition;
-use \derbenni\wp\di\definition\factory\ValueDefinitionFactory;
-use \derbenni\wp\di\definition\ScalarDefinition;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\definition\ArrayDefinition;
+use \derbenni\izon\definition\factory\ValueDefinitionFactory;
+use \derbenni\izon\definition\ScalarDefinition;
+use \derbenni\izon\test\TestCase;
 use \InvalidArgumentException;
 use \stdClass;
 
@@ -48,7 +48,7 @@ class ValueDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\ValueDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\ValueDefinitionFactory::make
    */
   public function testMake_CanCreateScalarDefinition() {
     self::assertInstanceOf(ScalarDefinition::class, $this->sut->make(['foo']));
@@ -56,7 +56,7 @@ class ValueDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\ValueDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\ValueDefinitionFactory::make
    */
   public function testMake_CanCreateArrayDefinition() {
     self::assertInstanceOf(ArrayDefinition::class, $this->sut->make([[]]));
@@ -64,7 +64,7 @@ class ValueDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\ValueDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\ValueDefinitionFactory::make
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage The given value is neither scalar nor an array.

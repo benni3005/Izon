@@ -21,7 +21,7 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\definition\factory;
+namespace derbenni\izon\definition\factory;
 
 /**
  * Interface for marking an object factory, so no actual class has to be used for type hints.

@@ -21,10 +21,10 @@ declare(strict_types = 1);
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\resolver;
+namespace derbenni\izon\resolver;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\iDefinition;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\iDefinition;
 use \InvalidArgumentException;
 
 /**

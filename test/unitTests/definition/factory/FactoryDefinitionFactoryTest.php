@@ -19,12 +19,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition\factory;
+namespace derbenni\izon\test\unitTests\definition\factory;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\definition\factory\FactoryDefinitionFactory;
-use \derbenni\wp\di\definition\FactoryDefinition;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\definition\factory\FactoryDefinitionFactory;
+use \derbenni\izon\definition\FactoryDefinition;
+use \derbenni\izon\test\TestCase;
 use \InvalidArgumentException;
 
 /**
@@ -47,7 +47,7 @@ class FactoryDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\FactoryDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\FactoryDefinitionFactory::make
    */
   public function testMake_CanCreateDefinition() {
     self::assertInstanceOf(FactoryDefinition::class, $this->sut->make([function(Container $container) {
@@ -57,7 +57,7 @@ class FactoryDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\FactoryDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\FactoryDefinitionFactory::make
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage The given factory is not a callable.

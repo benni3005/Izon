@@ -19,12 +19,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\resolver\resolver;
+namespace derbenni\izon\test\unitTests\resolver\resolver;
 
-use \derbenni\wp\di\Container;
-use \derbenni\wp\di\resolver\parameter\ClassNameParameterResolver;
-use \derbenni\wp\di\test\dummy\ParameterResolverTestDummy;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\Container;
+use \derbenni\izon\resolver\parameter\ClassNameParameterResolver;
+use \derbenni\izon\test\dummy\ParameterResolverTestDummy;
+use \derbenni\izon\test\TestCase;
 use \Exception;
 use \ReflectionParameter;
 use \stdClass;
@@ -49,7 +49,7 @@ class ClassNameParameterResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ClassNameParameterResolver::can
+   * @covers \derbenni\izon\resolver\parameter\ClassNameParameterResolver::can
    */
   public function testCan_ReturnsTrueIfTheGivenParameterIsATypeHint() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'requiredClassParameter'], 'foo');
@@ -59,7 +59,7 @@ class ClassNameParameterResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ClassNameParameterResolver::can
+   * @covers \derbenni\izon\resolver\parameter\ClassNameParameterResolver::can
    */
   public function testCan_ReturnsFalseIfGivenParameterIsNotATypeHint() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'unspecifiedParameter'], 'foo');
@@ -69,7 +69,7 @@ class ClassNameParameterResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ClassNameParameterResolver::resolve
+   * @covers \derbenni\izon\resolver\parameter\ClassNameParameterResolver::resolve
    */
   public function testResolve_CanReturnAnInstanceOfTheTypeHintedClass() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'requiredClassParameter'], 'foo');
@@ -84,7 +84,7 @@ class ClassNameParameterResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ClassNameParameterResolver::resolve
+   * @covers \derbenni\izon\resolver\parameter\ClassNameParameterResolver::resolve
    */
   public function testResolve_CanReturnTheDeafultValueOfATypeHintIfClassCouldNotBeResolved() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'optionalClassParameter'], 'foo');
@@ -99,8 +99,8 @@ class ClassNameParameterResolverTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\resolver\parameter\ClassNameParameterResolver::resolve
-   * @expectedException \derbenni\wp\di\DependencyException
+   * @covers \derbenni\izon\resolver\parameter\ClassNameParameterResolver::resolve
+   * @expectedException \derbenni\izon\DependencyException
    */
   public function testResolve_ThrowsExceptionIftypeHintCouldNotBeResolvedAndNoDefaultValueIsAvailable() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'requiredClassParameter'], 'foo');

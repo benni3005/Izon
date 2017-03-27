@@ -19,11 +19,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\wp\di\test\unitTests\definition\factory;
+namespace derbenni\izon\test\unitTests\definition\factory;
 
-use \derbenni\wp\di\definition\EntryReferenceDefinition;
-use \derbenni\wp\di\definition\factory\GetDefinitionFactory;
-use \derbenni\wp\di\test\TestCase;
+use \derbenni\izon\definition\EntryReferenceDefinition;
+use \derbenni\izon\definition\factory\GetDefinitionFactory;
+use \derbenni\izon\test\TestCase;
 use \InvalidArgumentException;
 
 /**
@@ -46,7 +46,7 @@ class GetDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\GetDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\GetDefinitionFactory::make
    */
   public function testMake_CanCreateDefinition() {
     self::assertInstanceOf(EntryReferenceDefinition::class, $this->sut->make(['foo']));
@@ -54,7 +54,7 @@ class GetDefinitionFactoryTest extends TestCase {
 
   /**
    *
-   * @covers \derbenni\wp\di\definition\factory\GetDefinitionFactory::make
+   * @covers \derbenni\izon\definition\factory\GetDefinitionFactory::make
    *
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage The given ID is not a string.
