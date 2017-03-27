@@ -100,7 +100,7 @@ class ClassNameParameterResolverTest extends TestCase {
   /**
    *
    * @covers \derbenni\izon\resolver\parameter\ClassNameParameterResolver::resolve
-   * @expectedException \derbenni\izon\DependencyException
+   * @expectedException \Exception
    */
   public function testResolve_ThrowsExceptionIftypeHintCouldNotBeResolvedAndNoDefaultValueIsAvailable() {
     $parameter = new ReflectionParameter([ParameterResolverTestDummy::class, 'requiredClassParameter'], 'foo');

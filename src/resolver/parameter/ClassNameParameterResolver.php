@@ -56,7 +56,6 @@ class ClassNameParameterResolver implements iParameterResolver {
    * @param ReflectionParameter $parameter The parameter to resolve itself.
    * @param Container $container Used for building other definitions found when resolving.
    * @param mixed[] $arguments The configured arguments for all parameters of a method.
-   * @throws DependencyException If the class could not be resolved and no default value is available.
    * @return mixed
    *
    * @since 1.0
@@ -68,7 +67,7 @@ class ClassNameParameterResolver implements iParameterResolver {
       if($parameter->isOptional()) {
         return $parameter->getDefaultValue();
       }
-      throw new DependencyException(sprintf('Class "%s" could not be resolved.', $parameter->getClass()->getName()), 0, $exception);
+      throw $exception;
     }
   }
 }

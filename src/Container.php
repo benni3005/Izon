@@ -25,6 +25,7 @@ namespace derbenni\izon;
 
 use \derbenni\izon\definition\factory\iObjectDefinitionFactory;
 use \derbenni\izon\definition\iDefinition;
+use \Exception;
 use \Interop\Container\ContainerInterface;
 
 /**
@@ -47,6 +48,12 @@ class Container implements ContainerInterface {
    * @var iDefinition[]
    */
   private $definitions = [];
+
+  /**
+   *
+   * @var string[]
+   */
+  private $definitionsBeingResolved = [];
 
   /**
    *
@@ -100,7 +107,7 @@ class Container implements ContainerInterface {
     }
 
     if(!array_key_exists($name, $this->cache)) {
-      $this->cache[$name] = $this->definitions[$name]->define($this);
+      $this->cache[$name] = $this->resolveDefinition($name);
     }
 
     return $this->cache[$name];
@@ -120,7 +127,7 @@ class Container implements ContainerInterface {
     if(!$this->has($name)) {
       throw new NotFoundException(sprintf('ID "%s" was not found in the container.', $name));
     }
-    return $this->definitions[$name]->define($this);
+    return $this->resolveDefinition($name);
   }
 
   /**
@@ -139,5 +146,32 @@ class Container implements ContainerInterface {
       return true;
     }
     return $exists;
+  }
+
+  /**
+   * Resolves a definition while checking for circular dependencies.
+   *
+   * @param string $name The name of the definition to resolve.
+   * @return mixed The value returned by the definition.
+   * @throws DependencyException Thrown if a circular dependency was detected.
+   *
+   * @since 1.0
+   */
+  private function resolveDefinition(string $name) {
+    if(array_key_exists($name, $this->definitionsBeingResolved)) {
+      throw new DependencyException(sprintf('Circular dependency detected while trying to resolve definition "%s".', $name));
+    }
+
+    $this->definitionsBeingResolved[$name] = true;
+
+    try {
+      $value = $this->definitions[$name]->define($this);
+    }catch(Exception $exception) {
+      unset($this->definitionsBeingResolved[$name]);
+      throw $exception;
+    }
+
+    unset($this->definitionsBeingResolved[$name]);
+    return $value;
   }
 }

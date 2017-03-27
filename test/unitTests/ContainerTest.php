@@ -24,9 +24,12 @@ namespace derbenni\izon\test\unitTests;
 use \derbenni\izon\Container;
 use \derbenni\izon\definition\factory\iObjectDefinitionFactory;
 use \derbenni\izon\definition\iDefinition;
+use \derbenni\izon\test\dummy\CircularDependencyOne;
+use \derbenni\izon\test\dummy\CircularDependencyTwo;
 use \derbenni\izon\test\dummy\ContainerTestDummy;
 use \derbenni\izon\test\TestCase;
 use \TypeError;
+use function \derbenni\izon\object;
 
 /**
  *
@@ -121,6 +124,7 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\izon\Container::get
+   * @covers \derbenni\izon\Container::resolveDefinition
    */
   public function testGet_CanReturnValueFromDefinitionIfDefinitionExists() {
     $definition = $this->getMockForAbstractClass(iDefinition::class);
@@ -138,6 +142,7 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\izon\Container::get
+   * @covers \derbenni\izon\Container::resolveDefinition
    */
   public function testGet_CanReturnValueFromCacheIfDefinitionWasBuiltBefore() {
     $definition = $this->getMockForAbstractClass(iDefinition::class);
@@ -156,6 +161,7 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\izon\Container::get
+   * @covers \derbenni\izon\Container::resolveDefinition
    *
    * @expectedException \derbenni\izon\NotFoundException
    * @expectedExceptionMessage not found in the container
@@ -167,6 +173,7 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\izon\Container::get
+   * @covers \derbenni\izon\Container::resolveDefinition
    */
   public function testGet_CanCanReturnInstanceOfUnconfiguredClassIfResolvable() {
     $objectDefinition = $this->getMockForAbstractClass(iDefinition::class);
@@ -188,6 +195,7 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\izon\Container::make
+   * @covers \derbenni\izon\Container::resolveDefinition
    */
   public function testMake_CanReturnValueFromDefinitionEveryTimeItIsRequested() {
     $definition = $this->getMockForAbstractClass(iDefinition::class);
@@ -206,11 +214,27 @@ class ContainerTest extends TestCase {
   /**
    *
    * @covers \derbenni\izon\Container::make
+   * @covers \derbenni\izon\Container::resolveDefinition
    *
    * @expectedException \derbenni\izon\NotFoundException
    * @expectedExceptionMessage not found in the container
    */
   public function testMake_CanThrowExceptionIfDefinitionWasNotFound() {
     (new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), []))->make('foo');
+  }
+
+  /**
+   *
+   * @covers \derbenni\izon\Container::resolveDefinition
+   *
+   * @expectedException \derbenni\izon\DependencyException
+   * @expectedExceptionMessage Circular dependency detected
+   */
+  public function testGet_CanThrowExceptionIfCircularDependencyDetected() {
+    $sut = new Container($this->getMockForAbstractClass(iObjectDefinitionFactory::class), [
+      CircularDependencyOne::class => object(CircularDependencyOne::class),
+      CircularDependencyTwo::class => object(CircularDependencyTwo::class),
+    ]);
+    $sut->get(CircularDependencyOne::class);
   }
 }
