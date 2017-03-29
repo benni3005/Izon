@@ -59,6 +59,12 @@ class ObjectDefinition implements iDefinition {
    *
    * @var array
    */
+  private $properties = [];
+
+  /**
+   *
+   * @var array
+   */
   private $constructor = [];
 
   /**
@@ -83,6 +89,22 @@ class ObjectDefinition implements iDefinition {
   }
 
   /**
+   * Defines a property to set within the resolved object.
+   *
+   * Multiple calls with the same property name will overwrite the value of it.
+   *
+   * @param string $property The name of the property.
+   * @param mixed $value The value of the property.
+   * @return self
+   *
+   * @since 1.0
+   */
+  public function property(string $property, $value): ObjectDefinition {
+    $this->properties[$property] = $value;
+    return $this;
+  }
+
+  /**
    * Defines which parameters to pass to the constructor of the object to resolve.
    *
    * A variable number of arguments can be passed to this method.
@@ -98,7 +120,7 @@ class ObjectDefinition implements iDefinition {
    *
    * @since 1.0
    */
-  public function constructor() {
+  public function constructor(): ObjectDefinition {
     $this->constructor = func_get_args();
     return $this;
   }
@@ -209,12 +231,22 @@ class ObjectDefinition implements iDefinition {
   public function define(Container $container) {
     $instance = $this->objectResolver->resolve($this->className, $container, $this->constructor);
 
+    foreach($this->properties as $property => $value) {
+      $reflectionProperty = new \ReflectionProperty($instance, $property);
+
+      if(!$reflectionProperty->isPublic()) {
+        $reflectionProperty->setAccessible(true);
+      }
+
+      $reflectionProperty->setValue($instance, $value);
+    }
+
     foreach($this->methods as $method => $callArguments) {
       foreach($callArguments as $arguments) {
         $reflectionMethod = new ReflectionMethod($instance, $method);
         $resolvedArguments = $this->methodResolver->resolve($reflectionMethod, $container, $arguments);
 
-        call_user_func_array([$instance, $method], $resolvedArguments);
+        $reflectionMethod->invokeArgs($instance, $resolvedArguments);
       }
     }
     return $instance;

@@ -52,6 +52,23 @@ class ObjectDefinitionTest extends TestCase {
 
   /**
    *
+   * @covers \derbenni\izon\definition\ObjectDefinition::property
+   */
+  public function testProperty_CanSetProperty() {
+    $this->sut->property('foo', 1);
+    $this->sut->property('bar', 2);
+    $this->sut->property('bar', 3);
+
+    $expected = [
+      'foo' => 1,
+      'bar' => 3,
+    ];
+
+    self::assertEquals($expected, $this->returnValueOfPrivateProperty($this->sut, 'properties'));
+  }
+
+  /**
+   *
    * @covers \derbenni\izon\definition\ObjectDefinition::constructor
    */
   public function testConstructor_CanSetConstructorParameters() {
@@ -163,11 +180,14 @@ class ObjectDefinitionTest extends TestCase {
     $methodResolver = $this->getMockForAbstractClass(iMethodResolver::class);
     $methodResolver->expects(self::once())
       ->method('resolve')
-      ->with(self::isInstanceOf(ReflectionMethod::class), self::equalTo($container), self::equalTo([1, 2]))
-      ->willReturn([1, 2]);
+      ->with(self::isInstanceOf(ReflectionMethod::class), self::equalTo($container), self::equalTo([4, 5]))
+      ->willReturn([4, 5]);
 
     $sut = new ObjectDefinition(ObjectDefinitionTestDummy::class, $objectResolver, $methodResolver);
-    $sut->method('method', 1, 2);
+    $sut->property('publicProperty', 1);
+    $sut->property('protectedProperty', 2);
+    $sut->property('privateProperty', 3);
+    $sut->method('method', 4, 5);
 
     self::assertInstanceOf(ObjectDefinitionTestDummy::class, $sut->define($container));
   }

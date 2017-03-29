@@ -27,6 +27,10 @@ namespace derbenni\izon\test\dummy;
  */
 class ObjectDefinitionTestDummy {
 
+  public $publicProperty = 0;
+  protected $protectedProperty = 0;
+  private $privateProperty = 0;
+
   public function method($foo, $bar) {
 
   }
