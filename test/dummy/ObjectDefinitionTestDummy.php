@@ -19,38 +19,15 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-namespace derbenni\izon\resolver;
-
-use \derbenni\izon\Container;
+namespace derbenni\izon\test\dummy;
 
 /**
- * Basic interface for definition resolvers.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
- *
- * @since 1.0
  */
-interface iResolver {
+class ObjectDefinitionTestDummy {
 
-  /**
-   * Checks if the resolver can actually resolve the given value.
-   *
-   * @param mixed $value
-   * @return bool
-   *
-   * @since 1.0
-   */
-  public function can($value): bool;
+  public function method($foo, $bar) {
 
-  /**
-   * This method will resolve the given value.
-   *
-   * @param mixed $value The value to resolve.
-   * @param Container $container Used for building other definitions found when resolving.
-   * @return mixed
-   * @throws InvalidArgumentException If invalid value was given.
-   *
-   * @since 1.0
-   */
-  public function resolve($value, Container $container);
+  }
 }

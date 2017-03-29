@@ -65,11 +65,13 @@ class ObjectDefinitionFactory implements iObjectDefinitionFactory {
       throw new InvalidArgumentException(sprintf('The given classname "%s" is unknown.', $className));
     }
 
-    return new ObjectDefinition($className, new ObjectResolver(new MethodResolver(new ParameterResolverCollection([
+    $methodResolver = new MethodResolver(new ParameterResolverCollection([
       new ConfiguredNamedParameterResolver(),
       new ConfiguredIndexedParameterResolver(),
       new ClassNameParameterResolver(),
       new DefaultValueParameterResolver(),
-    ]))));
+    ]));
+
+    return new ObjectDefinition($className, new ObjectResolver($methodResolver), $methodResolver);
   }
 }

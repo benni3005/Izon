@@ -24,7 +24,9 @@ declare(strict_types = 1);
 namespace derbenni\izon\definition;
 
 use \derbenni\izon\Container;
-use \derbenni\izon\resolver\iResolver;
+use \derbenni\izon\resolver\iMethodResolver;
+use \derbenni\izon\resolver\iObjectResolver;
+use \ReflectionMethod;
 
 /**
  * A definition for creating instances of objects.
@@ -43,28 +45,161 @@ class ObjectDefinition implements iDefinition {
 
   /**
    *
-   * @var iResolver
+   * @var iObjectResolver
    */
-  private $resolver = null;
+  private $objectResolver = null;
+
+  /**
+   *
+   * @var iMethodResolver
+   */
+  private $methodResolver = null;
+
+  /**
+   *
+   * @var array
+   */
+  private $constructor = [];
+
+  /**
+   *
+   * @var array
+   */
+  private $methods = [];
 
   /**
    * Sets the classname of the object and a resolver.
    *
    * @param string $className
-   * @param iResolver $resolver
+   * @param iObjectResolver $objectResolver
+   * @param iMethodResolver $methodResolver
    *
    * @since 1.0
    */
-  public function __construct(string $className, iResolver $resolver) {
+  public function __construct(string $className, iObjectResolver $objectResolver, iMethodResolver $methodResolver) {
     $this->className = $className;
-    $this->resolver = $resolver;
+    $this->objectResolver = $objectResolver;
+    $this->methodResolver = $methodResolver;
+  }
+
+  /**
+   * Defines which parameters to pass to the constructor of the object to resolve.
+   *
+   * A variable number of arguments can be passed to this method.
+   *
+   * Example:
+   *
+   * $definitions = [
+   *   'SomeClass' => derbenni\izon\object('SomeClass')->constructor($param1, $param2),
+   * ];
+   *
+   * @param mixed ... The parameters to pass to the constructor when resolving the object.
+   * @return self
+   *
+   * @since 1.0
+   */
+  public function constructor() {
+    $this->constructor = func_get_args();
+    return $this;
+  }
+
+  /**
+   * Defines a specific parameter's value to pass to the objects constructor when resolving it.
+   *
+   * Use this method when autowiring does not work. This can happen if a scalar value is
+   * expected by the constructor of the object or it isn't type hinted at all.
+   *
+   * When using this method the parameters not defined with it will still be autowired. When
+   * using it together with constructor() the parameter defined here will be used instead of
+   * the other one, since named parameters are prioritized higher when resolving method parameters.
+   *
+   * @param string $parameter
+   * @param mixed $value
+   * @return self
+   *
+   * @since 1.0
+   */
+  public function constructorParameter(string $parameter, $value): ObjectDefinition {
+    $this->constructor[$parameter] = $value;
+    return $this;
+  }
+
+  /**
+   * Defines which parameters to pass to the given method of the object to resolve.
+   *
+   * A variable number of arguments can be passed to this method after the method name.
+   *
+   * Can be used multiple times if the method should be called more than once with different parameters.
+   *
+   * If the method name passed is "__construct" then it will set the parameters for the constructor
+   * and overwrite all existing parameters defined for it.
+   *
+   * Example:
+   *
+   * $definitions = [
+   *   'SomeClass' => derbenni\izon\object('SomeClass')->method('someMethod', $param1, $param2),
+   * ];
+   *
+   * @param string $method The method to call when resolving the object.
+   * @param mixed ... The parameters to pass to the method when resolving the object.
+   * @return self
+   *
+   * @since 1.0
+   */
+  public function method(string $method): ObjectDefinition {
+    if($method === '__construct') {
+      $this->constructor = array_slice(func_get_args(), 1);
+      return $this;
+    }
+
+    if(!array_key_exists($method, $this->methods)) {
+      $this->methods[$method] = [];
+    }
+
+    $this->methods[$method][] = array_slice(func_get_args(), 1);
+    return $this;
+  }
+
+  /**
+   * Defines a specific method to call and the parameter's value to pass to it when resolving the object.
+   *
+   * Use this method when autowiring does not work. This can happen if a scalar value is
+   * expected by the method of the object or it isn't type hinted at all.
+   *
+   * If the method name passed is "__construct" then it will set the parameter for the constructor
+   * and overwrite the one defined for it previously.
+   *
+   * When using this method the parameters not defined with it will still be autowired. Be aware of
+   * this method only setting parameters for the first call of the passed method. Also, if you already
+   * defined parameters for a method by calling method() the named parameter will be used when resolving
+   * the object, since named parameters are prioritized higher when resolving method parameters.
+   *
+   * @param string $method
+   * @param string $parameter
+   * @param mixed $value
+   * @return self
+   *
+   * @since 1.0
+   */
+  public function methodParameter(string $method, string $parameter, $value): ObjectDefinition {
+    if($method === '__construct') {
+      $this->constructor[$parameter] = $value;
+      return $this;
+    }
+
+    if(!array_key_exists($method, $this->methods)) {
+      $this->methods[$method] = [0 => []];
+    }
+
+    $this->methods[$method][0][$parameter] = $value;
+    return $this;
   }
 
   /**
    * Returns an instance of the object.
    *
    * If other dependencies are found in the constructor they will be automatically resolved, if possible.
-   * This can happen for other objects pretty easily, for anything different an exception gets thrown.
+   * If parameters were previously defined for the constructor or other methods they will be passed/called, too.
    *
    * @param Container $container Used for resolving other dependencies found in the objects constructor.
    * @return mixed The object instance.
@@ -72,6 +207,16 @@ class ObjectDefinition implements iDefinition {
    * @since 1.0
    */
   public function define(Container $container) {
-    return $this->resolver->resolve($this->className, $container);
+    $instance = $this->objectResolver->resolve($this->className, $container, $this->constructor);
+
+    foreach($this->methods as $method => $callArguments) {
+      foreach($callArguments as $arguments) {
+        $reflectionMethod = new ReflectionMethod($instance, $method);
+        $resolvedArguments = $this->methodResolver->resolve($reflectionMethod, $container, $arguments);
+
+        call_user_func_array([$instance, $method], $resolvedArguments);
+      }
+    }
+    return $instance;
   }
 }

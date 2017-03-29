@@ -35,7 +35,7 @@ use \ReflectionMethod;
  *
  * @since 1.0
  */
-class MethodResolver implements iResolver {
+class MethodResolver implements iMethodResolver {
 
   /**
    *
@@ -71,13 +71,13 @@ class MethodResolver implements iResolver {
    *
    * @param ReflectionMethod $method
    * @param Container $container
-   * @param mixed[] $arguments
+   * @param mixed[] $methodArguments
    * @return mixed
    * @throws InvalidArgumentException If no valid method was given.
    *
    * @since 1.0
    */
-  public function resolve($method, Container $container, array $arguments = []) {
+  public function resolve($method, Container $container, array $methodArguments = []) {
     if(!$this->can($method)) {
       throw new InvalidArgumentException(sprintf('Given method is not an instance of ReflectionMethod: %s', print_r($method, true)));
     }
@@ -85,7 +85,7 @@ class MethodResolver implements iResolver {
     $resolvedArguments = [];
 
     foreach($method->getParameters() as $parameter) {
-      $resolvedArguments[] = $this->parameterResolver->resolve($parameter, $container, $arguments);
+      $resolvedArguments[] = $this->parameterResolver->resolve($parameter, $container, $methodArguments);
     }
     return $resolvedArguments;
   }

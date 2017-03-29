@@ -34,22 +34,22 @@ use \ReflectionClass;
  *
  * @since 1.0
  */
-class ObjectResolver implements iResolver {
+class ObjectResolver implements iObjectResolver {
 
   /**
    *
-   * @var MethodResolver
+   * @var iMethodResolver
    */
   private $methodResolver = null;
 
   /**
    * Sets the resolver for resolving dependencies of class methods.
    *
-   * @param MethodResolver $methodResolver
+   * @param iMethodResolver $methodResolver
    *
    * @since 1.0
    */
-  public function __construct(MethodResolver $methodResolver) {
+  public function __construct(iMethodResolver $methodResolver) {
     $this->methodResolver = $methodResolver;
   }
 
@@ -70,12 +70,13 @@ class ObjectResolver implements iResolver {
    *
    * @param string $className
    * @param Container $container
+   * @param array $constructorArguments
    * @return mixed
    * @throws InvalidArgumentException If no valid classname was given.
    *
    * @since 1.0
    */
-  public function resolve($className, Container $container) {
+  public function resolve($className, Container $container, array $constructorArguments = []) {
     if(!$this->can($className)) {
       throw new InvalidArgumentException(sprintf('Given classname "%s" is not a string or does not exist.', print_r($className, true)));
     }
@@ -83,7 +84,7 @@ class ObjectResolver implements iResolver {
     $reflectionClass = new ReflectionClass($className);
 
     if($reflectionClass->hasMethod('__construct')) {
-      $arguments = $this->methodResolver->resolve($reflectionClass->getConstructor(), $container);
+      $arguments = $this->methodResolver->resolve($reflectionClass->getConstructor(), $container, $constructorArguments);
       return $reflectionClass->newInstanceArgs($arguments);
     }
     return $reflectionClass->newInstanceWithoutConstructor();

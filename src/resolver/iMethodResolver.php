@@ -22,35 +22,27 @@
 namespace derbenni\izon\resolver;
 
 use \derbenni\izon\Container;
+use \InvalidArgumentException;
 
 /**
- * Basic interface for definition resolvers.
+ * Resolver extension interface for defining a method resolver.
  *
  * @author Benjamin Hofmann <benni@derbenni.rocks>
  *
  * @since 1.0
  */
-interface iResolver {
-
-  /**
-   * Checks if the resolver can actually resolve the given value.
-   *
-   * @param mixed $value
-   * @return bool
-   *
-   * @since 1.0
-   */
-  public function can($value): bool;
+interface iMethodResolver extends iResolver {
 
   /**
    * This method will resolve the given value.
    *
    * @param mixed $value The value to resolve.
    * @param Container $container Used for building other definitions found when resolving.
+   * @param array $methodArguments Arguments passed to the method.
    * @return mixed
    * @throws InvalidArgumentException If invalid value was given.
    *
    * @since 1.0
    */
-  public function resolve($value, Container $container);
+  public function resolve($value, Container $container, array $methodArguments = []);
 }
